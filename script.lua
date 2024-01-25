@@ -1,4 +1,4 @@
-    local towers = workspace:WaitForChild("Towers")
+f    local towers = workspace:WaitForChild("Towers")
     local instance_names = {}
     for _, instance in ipairs(towers:GetChildren()) do
         table.insert(instance_names, instance.Name)
