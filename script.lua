@@ -1,35 +1,41 @@
 local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 local screenGui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
 local textLabel = Instance.new("TextLabel")
-local scale = 1 -- Параметр масштабирования
+local scale = 1
 
 -- Настраиваем GUI
 screenGui.Name = "CoordinateGui"
 screenGui.ResetOnSpawn = false
-screenGui.DisplayOrder = 10 -- Устанавливаем порядок отображения
+screenGui.DisplayOrder = 10
+
+frame.Size = UDim2.new(0, 200 * scale, 0, 90 * scale)
+frame.Position = UDim2.new(0, 10 * scale, 0, 10 * scale)
+frame.BackgroundColor3 = Color3.fromRGB(4, 28, 50)
+frame.BorderSizePixel = 0
 
 textLabel.Name = "CoordinateLabel"
-textLabel.Size = UDim2.new(0, 100 * scale, 0, 30 * scale) -- Уменьшаем размер текстового блока в зависимости от масштаба
-textLabel.Position = UDim2.new(0, 10, 0, 30) -- Уменьшаем положение текстового блока в зависимости от масштаба
+textLabel.Size = UDim2.new(1, 0, 1, 0)
 textLabel.Text = "Coordinates: "
 textLabel.BackgroundColor3 = Color3.fromRGB(4, 28, 50)
 textLabel.BorderSizePixel = 0
 textLabel.TextColor3 = Color3.new(1, 1, 1)
+textLabel.Parent = frame
 
 -- Создаем закругление
 local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 10 * scale) -- Уменьшаем радиус закругления в зависимости от масштаба
-corner.Parent = textLabel
+corner.CornerRadius = UDim.new(0, 10 * scale)
+corner.Parent = frame
 
 -- Добавляем GUI в игру
 screenGui.Parent = playerGui
-textLabel.Parent = screenGui
+frame.Parent = screenGui
 
 local close_button = Instance.new("TextButton")
 close_button.Text = "Закрыть"
-close_button.Position = UDim2.new(0.76, 0, 0.55, -25 * scale) -- Уменьшаем размер и положение кнопки закрытия в зависимости от масштаба
-close_button.Size = UDim2.new(0.2, 0, 0, 25 * scale)
-close_button.Parent = screenGui
+close_button.Position = UDim2.new(0.76, 0, 0.8, 0)
+close_button.Size = UDim2.new(0.2, 0, 0.2, 0)
+close_button.Parent = frame
 
 -- Добавляем обработчик события для закрытия GUI при нажатии левой кнопкой мыши
 close_button.MouseButton1Click:Connect(function()
@@ -41,7 +47,6 @@ game:GetService("RunService").Heartbeat:Connect(function()
     local player = game.Players.LocalPlayer
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         local position = player.Character.HumanoidRootPart.Position
-        -- Форматируем координаты до сотых
         local formattedPosition = string.format("X: %.2f\nY: %.2f\nZ: %.2f", position.X, position.Y, position.Z)
         textLabel.Text = formattedPosition
     end
