@@ -5,15 +5,18 @@
     -- Настраиваем GUI
     screenGui.Name = "CoordinateGui"
     textLabel.Name = "CoordinateLabel"
-    textLabel.Size = UDim2.new(0, 200, 0, 50)
+    textLabel.Size = UDim2.new(0, 200, 0.2, 50)
     textLabel.Position = UDim2.new(0, 10, 0, 10)
     textLabel.Text = "Coordinates: "
+    textLabel.BackgroundColor3 = Color3.new(1, 0, 0) -- Задаем цвет фона (красный в данном случае)
+    textLabel.BorderSizePixel = 0 -- Убираем границу
+    textLabel.TextColor3 = Color3.new(4, 28, 50) -- Задаем цвет текста (белый в данном случае)
 
     -- Создаем закругление
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 20) -- Задаем радиус закругления
     corner.Parent = textLabel -- Добавляем закругление к нашему GUI
-
+    
     -- Добавляем GUI в игру
     screenGui.Parent = playerGui
     textLabel.Parent = screenGui
