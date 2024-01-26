@@ -19,6 +19,7 @@ Coords.ImageColor3 = Color3.fromRGB(14, 41, 84)
 Coords.ScaleType = Enum.ScaleType.Slice
 Coords.SliceCenter = Rect.new(100, 100, 100, 100)
 Coords.SliceScale = 0.120
+Coords.ZIndex = 4
 
 CloseCoords.Name = "CloseCoords"
 CloseCoords.Parent = Coords
