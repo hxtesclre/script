@@ -10,7 +10,7 @@ screenGui.DisplayOrder = 10 -- Устанавливаем порядок ото�
 
 textLabel.Name = "CoordinateLabel"
 textLabel.Size = UDim2.new(0, 100 * scale, 0, 30 * scale) -- Уменьшаем размер текстового блока в зависимости от масштаба
-textLabel.Position = UDim2.new(0, 100, 0, 10) -- Уменьшаем положение текстового блока в зависимости от масштаба
+textLabel.Position = UDim2.new(0, 10, 0, 30) -- Уменьшаем положение текстового блока в зависимости от масштаба
 textLabel.Text = "Coordinates: "
 textLabel.BackgroundColor3 = Color3.fromRGB(4, 28, 50)
 textLabel.BorderSizePixel = 0
