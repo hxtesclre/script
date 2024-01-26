@@ -26,13 +26,14 @@ CloseCoords.AnchorPoint = Vector2.new(0.5, 0.5)
 CloseCoords.BackgroundColor3 = Color3.fromRGB(132, 167, 161)
 CloseCoords.BorderColor3 = Color3.fromRGB(0, 0, 0)
 CloseCoords.BorderSizePixel = 0
-CloseCoords.Position = UDim2.new(0.5, 0, 0.129999995, 0)
+CloseCoords.Position = UDim2.new(0.5, 0, 0.7, 0) -- Перемещаем текст ниже
 CloseCoords.Size = UDim2.new(0, 70, 0, 20)
 CloseCoords.ZIndex = 2
 CloseCoords.Font = Enum.Font.SourceSansItalic
 CloseCoords.Text = "Coords"
-CloseCoords.TextColor3 = Color3.fromRGB(0, 0, 0)
+CloseCoords.TextColor3 = Color3.fromRGB(255, 255, 255) -- Изменяем цвет текста на белый
 CloseCoords.TextSize = 14.000
+
 
 CloseCoordsCircle.Name = "CloseCoordsCircle"
 CloseCoordsCircle.Parent = CloseCoords
