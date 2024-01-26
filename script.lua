@@ -19,7 +19,7 @@
 
     -- Добавляем масштабирование
     local scale = Instance.new("UIScale")
-    scale.Scale = 2 -- Задаем масштаб (1.5 в данном случае)
+    scale.Scale = 1 -- Задаем масштаб (1.5 в данном случае)
     scale.Parent = screenGui -- Добавляем масштабирование к нашему GUI
 
     -- Добавляем GUI в игру
