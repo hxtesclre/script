@@ -5,7 +5,7 @@
     -- Настраиваем GUI
     screenGui.Name = "CoordinateGui"
     textLabel.Name = "CoordinateLabel"
-    textLabel.Size = UDim2.new(0, 150, 0, 50)
+    textLabel.Size = UDim2.new(0, 200, 0, 50)
     textLabel.Position = UDim2.new(0, 10, 0, 10)
     textLabel.BackgroundColor3 = Color3.fromRGB(4, 28, 50) -- Задаем цвет фона (красный в данном случае)
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Задаем цвет текста (белый в данном случае)
