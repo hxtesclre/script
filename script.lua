@@ -1,209 +1,51 @@
-    local towers = workspace:WaitForChild("Towers")
-    local instance_names = {}
-    for _, instance in ipairs(towers:GetChildren()) do
-        table.insert(instance_names, instance.Name)
-    end
+    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local screenGui = Instance.new("ScreenGui")
+    local textLabel = Instance.new("TextLabel")
 
-    -- Создаем GUI
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "TowerNamesGUI"
-    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    -- Настраиваем GUI
+    screenGui.Name = "CoordinateGui"
+    textLabel.Name = "CoordinateLabel"
+    textLabel.Size = UDim2.new(0, 200, 0, 50)
+    textLabel.Position = UDim2.new(0, 10, 0, 10)
+    textLabel.Text = "Coordinates: "
+    textLabel.BackgroundColor3 = Color3.new(1, 0, 0) -- Задаем цвет фона (красный в данном случае)
+    textLabel.BorderSizePixel = 0 -- Убираем границу
+    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Задаем цвет текста (белый в данном случае)
 
-    -- Масштаб для GUI
-    local guiScale = 0.7  -- Измените это значение по своему усмотрению
+    -- Создаем закругление
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 20) -- Задаем радиус закругления
+    corner.Parent = textLabel -- Добавляем закругление к нашему GUI
+    
+    -- Добавляем GUI в игру
+    screenGui.Parent = playerGui
+    textLabel.Parent = screenGui
 
-    -- Создаем UI элемент для отображения имен экземпляров
-    local text_label = Instance.new("TextLabel")
-    text_label.Text = "Имена башен"
-    text_label.Position = UDim2.new(0.76, 0, 0.098096624, 0)
-    text_label.Size = UDim2.new(0.3 * guiScale, 0, 0, 50 * guiScale)
-    text_label.Parent = gui
-    text_label.TextSize = 9
-
-    -- Создаем UI элемент для отображения списка имен экземпляров
-    local scroll_frame = Instance.new("ScrollingFrame")
-    scroll_frame.Position = UDim2.new(0.76, 0, 0.098096624, 50 * guiScale)
-    scroll_frame.Size = UDim2.new(0.3 * guiScale, 0, 0.7 * guiScale, -100 * guiScale)
-    scroll_frame.CanvasSize = UDim2.new(0, 0, 0, #instance_names * 20 * guiScale)
-    scroll_frame.Parent = gui
-
-    -- Создаем UI элементы для каждого имени экземпляра
-    for i, name in ipairs(instance_names) do
-        local instance_label = Instance.new("TextLabel")
-        instance_label.Text = name
-        instance_label.Position = UDim2.new(0.4, 0, 0, (i - 1) * 20 * guiScale)
-        instance_label.Size = UDim2.new(0.3 * guiScale, 0, 0, 20 * guiScale)
-        instance_label.Parent = scroll_frame
-    end
-
-    -- Создаем кнопку закрытия
     local close_button = Instance.new("TextButton")
     close_button.Text = "Закрыть"
-    close_button.Position = UDim2.new(0.76, 0, 0.55, -50 * guiScale)
-    close_button.Size = UDim2.new(0.3 * guiScale, 0, 0, 50 * guiScale)
-    close_button.Parent = gui
+    close_button.Position = UDim2.new(0.76, 0, 0.55, -50)
+    close_button.Size = UDim2.new(0.3, 0, 0, 50)
+    close_button.Parent = screenGui
 
     -- Добавляем обработчик события для закрытия GUI при нажатии левой кнопкой мыши
     close_button.MouseButton1Click:Connect(function()
-        gui:Destroy()
+        screenGui:Destroy()
     end)
 
-    -- Добавляем обработчик события для обновления GUI при нажатии правой кнопкой мыши
-    close_button.MouseButton2Click:Connect(function()
-        -- Обновляем список имен и пересоздаем элементы GUI
-        for _, child in ipairs(scroll_frame:GetChildren()) do
-            child:Destroy()
-        end
-
-        instance_names = {}
-        for _, instance in ipairs(towers:GetChildren()) do
-            table.insert(instance_names, instance.Name)
-        end
-
-        scroll_frame.CanvasSize = UDim2.new(0, 0, 0, #instance_names * 20 * guiScale)
-
-        for i, name in ipairs(instance_names) do
-            local instance_label = Instance.new("TextLabel")
-            instance_label.Text = name
-            instance_label.Position = UDim2.new(0.4, 0, 0, (i - 1) * 20 * guiScale)
-            instance_label.Size = UDim2.new(0.3 * guiScale, 0, 0, 20 * guiScale)
-            instance_label.Parent = scroll_frame
+    -- Обновляем координаты игрока в GUI
+    game:GetService("RunService").Heartbeat:Connect(function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local position = player.Character.HumanoidRootPart.Position
+            -- Форматируем координаты до сотых
+            local formattedPosition = string.format("X: %.2f\nY: %.2f\nZ: %.2f", position.X, position.Y, position.Z)
+            textLabel.Text = formattedPosition
         end
     end)
 
-    -- Создаем кнопку улучшения
-    local upgrade_button = Instance.new("TextButton")
-    upgrade_button.Text = "Улучшить башню"
-    upgrade_button.Position = UDim2.new(0.76, 0, 0.5, -50 * guiScale)
-    upgrade_button.Size = UDim2.new(0.3 * guiScale, 0, 0, 50 * guiScale)
-    upgrade_button.Parent = gui
-    upgrade_button.MouseButton1Click:Connect(function()
-local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-local screenGui = Instance.new("ScreenGui")
-local textLabel = Instance.new("TextLabel")
-
--- Настраиваем GUI
-screenGui.Name = "CoordinateGui"
-textLabel.Name = "CoordinateLabel"
-textLabel.Size = UDim2.new(0, 200, 0, 50)
-textLabel.Position = UDim2.new(0, 10, 0, 10)
-textLabel.Text = "Coordinates: "
-
--- Добавляем GUI в игру
-screenGui.Parent = playerGui
-textLabel.Parent = screenGui
-
--- Обновляем координаты игрока в GUI
-game:GetService("RunService").Heartbeat:Connect(function()
-    local player = game.Players.LocalPlayer
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local position = player.Character.HumanoidRootPart.Position
-        -- Форматируем координаты до сотых
-        local formattedPosition = string.format("X: %.2f, Y: %.2f, Z: %.2f", position.X, position.Y, position.Z)
-        textLabel.Text = "Coordinates: " .. formattedPosition
-    end
-end)
-
--- Скрываем GUI при смерти игрока
-game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
-    character:WaitForChild("Humanoid").Died:Connect(function()
-        screenGui.Enabled = false
+    -- Скрываем GUI при смерти игрока
+    game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+        character:WaitForChild("Humanoid").Died:Connect(function()
+            screenGui.Enabled = false
+        end)
     end)
-end)
-
-end)
-
-    upgrade_button.MouseButton2Click:Connect(function()
-
-    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopSwiftStrike3",Vector3.new(-120,-197.89,-61))
-    wait(20)
-    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopSwiftStrike3",Vector3.new(-115,-197.89,-61))
-    wait(25)
-    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopSwiftStrike3",Vector3.new(-110,-197.89,-61))
-    wait(25)
-    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopSwiftStrike3",Vector3.new(-105,-197.89,-61))
-
-        local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
-        local instance_names = {}
-        local executionTime = 140 -- Замените на желаемое время выполнения в секундах
-        local startTime = tick() -- Фиксация времени начала выполнения
-
-        while tick() - startTime < executionTime do
-            for _, instance in ipairs(towers:GetChildren()) do
-                table.insert(instance_names, instance.Name)
-                
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("upgrade"):InvokeServer(instance.Name)
-                
-                wait(0.3)
-            end
-        end
-
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Mr Frost TowerLightningSpeed",Vector3.new(-80, 197.89, -40))
-        wait(10)
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Mr Frost TowerLightningSpeed",Vector3.new(-50, 197.89, -40))
-        wait(10)
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Mr Frost TowerLightningSpeed",Vector3.new(-50, 197.89, -65))
-        
-        local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
-        local instance_names = {}
-        local executionTimes = 150 -- Замените на желаемое время выполнения в секундах
-        local startingTime = tick() -- Фиксация времени начала выполнения
-
-        while tick() - startingTime < executionTimes do
-            for _, instance in ipairs(towers:GetChildren()) do
-                table.insert(instance_names, instance.Name)
-                
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("upgrade"):InvokeServer(instance.Name)
-                
-                wait(1)
-            end
-        end
-
-
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike1",Vector3.new(-115, 197.89, -30))
-        wait(5)
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike1",Vector3.new(-105, 197.89, -30))
-        wait(5)
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike1",Vector3.new(-95, 197.89, -30))
-        wait(5)
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike1",Vector3.new(-115, 197.89, -70))
-        wait(5)
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike1",Vector3.new(-105, 197.89, -70))
-        local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
-        local instance_names = {}
-        local executionTimese = 150 -- Замените на желаемое время выполнения в секундах
-        local startingeTime = tick() -- Фиксация времени начала выполнения
-
-        while tick() - startingeTime < executionTimese do
-            for _, instance in ipairs(towers:GetChildren()) do
-                table.insert(instance_names, instance.Name)
-                
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("upgrade"):InvokeServer(instance.Name)
-                
-                wait(1)
-            end
-        end
-
-        local sharedModules = game:GetService("ReplicatedStorage"):WaitForChild("SharedModules")
-        local knitService = sharedModules:WaitForChild("Knit"):WaitForChild("Services")
-        local gameOverOptionsService = knitService:WaitForChild("GameOverOptionsService")
-        local votingSystemPath = game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE")
-
-        wait(250)
-        game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("GameOverOptionsService"):WaitForChild("RF"):WaitForChild("voteAgain"):InvokeServer()
-
-        wait(15)
-        local args = {
-        [1] = "Anime3",
-        [2] = {
-        ["InfiniteMode"] = false,
-        ["Level"] = 1
-              } 
-        }
-
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(unpack(args))
-        
-        wait(30)
-        votingSystemPath.RE.Vote:FireServer(0)
-
-end)
