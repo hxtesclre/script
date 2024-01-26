@@ -4,6 +4,7 @@
 
     -- Настраиваем GUI
     screenGui.Name = "CoordinateGui"
+    screenGui.DisplayOrder = 1 -- Задаем масштаб GUI
     textLabel.Name = "CoordinateLabel"
     textLabel.Size = UDim2.new(0, 200, 0.2, 50)
     textLabel.Position = UDim2.new(0, 10, 0, 10)
