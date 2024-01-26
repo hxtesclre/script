@@ -1,7 +1,7 @@
 local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 local screenGui = Instance.new("ScreenGui")
 local textLabel = Instance.new("TextLabel")
-local scale = 0.5 -- Параметр масштабирования
+local scale = 1 -- Параметр масштабирования
 
 -- Настраиваем GUI
 screenGui.Name = "CoordinateGui"
