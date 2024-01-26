@@ -5,7 +5,7 @@
     -- Настраиваем GUI
     screenGui.Name = "CoordinateGui"
     textLabel.Name = "CoordinateLabel"
-    textLabel.Size = UDim2.new(0, 200, 0.2, 50)
+    textLabel.Size = UDim2.new(0, 100, 0, 25)
     textLabel.Position = UDim2.new(0, 10, 0, 10)
     textLabel.BackgroundColor3 = Color3.fromRGB(4, 28, 50) -- Задаем цвет фона (красный в данном случае)
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Задаем цвет текста (белый в данном случае)
@@ -22,7 +22,7 @@
     local close_button = Instance.new("TextButton")
     close_button.Text = "Закрыть"
     close_button.Position = UDim2.new(0.76, 0, 0.55, -50)
-    close_button.Size = UDim2.new(0.3, 0, 0, 50)
+    close_button.Size = UDim2.new(0.2, 0, 0.2, 0)
     close_button.Parent = screenGui
 
     -- Добавляем обработчик события для закрытия GUI при нажатии левой кнопкой мыши
