@@ -86,19 +86,18 @@
     upgrade_button.MouseButton1Click:Connect(function()
         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(0)
         while true do
-
-                wait(10)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopFarReach2",Vector3.new(-21.100000381469727, 199.8000030517578, 5.400000095367432))
-                wait(40)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopFarReach2",Vector3.new(-38.599998474121094, 199.8000030517578, -3.799999952316284))
-                wait(30)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopFarReach2",Vector3.new(-17.700000762939453, 199.8000030517578, 0.30000001192092896))
-                wait(35)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopFarReach2",Vector3.new(-35.5, 199.8000030517578, -8.399999618530273))
+            wait(10)
+            game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopLightningSpeed",Vector3.new(-120,-197.89,-61))
+            wait(15)
+            game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopLightningSpeed",Vector3.new(-115,-197.89,-61))
+            wait(15)
+            game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopLightningSpeed",Vector3.new(-110,-197.89,-61))
+            wait(20)
+            game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceBishopLightningSpeed",Vector3.new(-105,-197.89,-61))
 
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
-                local executionTime = 380 -- Замените на желаемое время выполнения в секундах
+                local executionTime = 140 -- Замените на желаемое время выполнения в секундах
                 local startTime = tick() -- Фиксация времени начала выполнения
 
                 while tick() - startTime < executionTime do
@@ -107,17 +106,17 @@
                         
                         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("upgrade"):InvokeServer(instance.Name)
                         
-                        wait(1)
+                        wait(0.3)
                     end
                 end
-
-                wait(25)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRook",Vector3.new(-63.79999923706055, 199.8000030517578, 30.799999237060547))
-                wait(25)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRook",Vector3.new(-38.20000076293945, 199.8000030517578, 44.5))        
+                wait(10)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRookSwiftStrike3",Vector3.new(-79.30000305175781, 194.3000030517578, -39.400001525878906))
+                wait(20)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRookSwiftStrike3",Vector3.new(-78.5, 194.3000030517578, -63.099998474121094))
+                
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
-                local executionTimes = 150 -- Замените на желаемое время выполнения в секундах
+                local executionTimes = 100 -- Замените на желаемое время выполнения в секундах
                 local startingTime = tick() -- Фиксация времени начала выполнения
 
                 while tick() - startingTime < executionTimes do
@@ -131,27 +130,18 @@
                 end
 
 
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Arctic Force Santa",Vector3.new(-29.799999237060547, 199.79998779296875, -19.399999618530273))
-                wait(15)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Arctic Force Santa",Vector3.new(-12.699999809265137, 199.79998779296875, -6))
-                wait(10)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Arctic Force Santa",Vector3.new(-7.900000095367432, 199.79998779296875, -13))
-                wait(10)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Arctic Force Santa",Vector3.new(-25.899999618530273, 199.79998779296875, -26.399999618530273))
-                wait(5)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-2.299999952316284, 199.8000030517578, -1.5))
-                wait(5)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-39.400001525878906, 199.8000030517578, -23.600000381469727))
-                wait(5)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-33.900001525878906, 199.8000030517578, -33.099998474121094))
-                wait(5)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(2.700000047683716, 199.8000030517578, -9.600000381469727))
-                wait(5)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(12.700000047683716, 199.8000030517578, -9.600000381469727))
-
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-115, 197.89, -30))
+                wait(3)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-105, 197.89, -30))
+                wait(3)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-95, 197.89, -30))
+                wait(3)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-115, 197.89, -70))
+                wait(3)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("Ginger Bread King TowerSwiftStrike2",Vector3.new(-105, 197.89, -70))
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
-                local executionTimese = 290 -- Замените на желаемое время выполнения в секундах
+                local executionTimese = 150 -- Замените на желаемое время выполнения в секундах
                 local startingeTime = tick() -- Фиксация времени начала выполнения
 
                 while tick() - startingeTime < executionTimese do
@@ -160,7 +150,7 @@
                         
                         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("upgrade"):InvokeServer(instance.Name)
                         
-                        wait(1)
+                        wait(0.5)
                     end
                 end
 
@@ -169,16 +159,16 @@
                 local gameOverOptionsService = knitService:WaitForChild("GameOverOptionsService")
                 local votingSystemPath = game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE")
 
-                wait(5)
+                wait(330)
                 game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("GameOverOptionsService"):WaitForChild("RF"):WaitForChild("voteAgain"):InvokeServer()
 
                 wait(15)
                 local args = {
-                    [1] = "IceKingdom",
-                    [2] = {
-                        ["InfiniteMode"] = false,
-                        ["Level"] = 1
-                    }
+                [1] = "Anime3",
+                [2] = {
+                ["InfiniteMode"] = false,
+                ["Level"] = 1
+                      } 
                 }
 
                 game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(unpack(args))
