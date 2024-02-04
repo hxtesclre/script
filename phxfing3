@@ -110,9 +110,9 @@
                     end
                 end
                 wait(10)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRookLigtningSpeed",Vector3.new(-79.30000305175781, 194.3000030517578, -39.400001525878906))
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRookLightningSpeed",Vector3.new(-79.30000305175781, 194.3000030517578, -39.400001525878906))
                 wait(20)
-                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRookLigtningSpeed",Vector3.new(-78.5, 194.3000030517578, -63.099998474121094))
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF"):WaitForChild("deploy"):InvokeServer("IceRookLightningSpeed",Vector3.new(-78.5, 194.3000030517578, -63.099998474121094))
                 
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
