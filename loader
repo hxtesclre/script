@@ -1,0 +1,21 @@
+local Player = game:GetService("Players").LocalPlayer
+local PlayerName = Player.Name
+
+if PlayerName == "BPeDuHa" then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hxtesclre/script/main/BPeDuHa%20autofarm"))()
+
+elseif PlayerName == "phxfin1" then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hxtesclre/script/main/phxfing1"))()
+
+elseif PlayerName == "phxfing2" then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hxtesclre/script/main/phxfing2"))()
+
+elseif PlayerName == "phxfing3" then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hxtesclre/script/main/phxfing3"))()
+
+elseif PlayerName == "phxfing4" then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hxtesclre/script/main/phxfing4"))()
+
+else
+    print("Игрок не найден") -- Отправляет сообщение, если игрок не найден
+end
