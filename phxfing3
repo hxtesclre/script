@@ -91,13 +91,13 @@
                 replicatedStorage:WaitForChild("deploy"):InvokeServer(towerName, position)
             end
                 wait(10)
-                InvokeServer("IceBishopLightningSpeed",Vector3.new(-68.30000305175781, 189, 26.899999618530273))
+                invokeServer("IceBishopLightningSpeed",Vector3.new(-68.30000305175781, 189, 26.899999618530273))
                 wait(30)
-                InvokeServer("IceBishopLightningSpeed",Vector3.new(-84.69999694824219, 189, 25.899999618530273))
+                invokeServer("IceBishopLightningSpeed",Vector3.new(-84.69999694824219, 189, 25.899999618530273))
                 wait(20)
-                InvokeServer("IceBishopLightningSpeed",Vector3.new(-69, 189, 43.70000076293945))
+                invokeServer("IceBishopLightningSpeed",Vector3.new(-69, 189, 43.70000076293945))
                 wait(20)
-                InvokeServer("IceBishopLightningSpeed",Vector3.new(-84.4000015258789, 189, 44))
+                invokeServer("IceBishopLightningSpeed",Vector3.new(-84.4000015258789, 189, 44))
 
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
@@ -115,9 +115,9 @@
                 end
                 
                 wait(45)
-                InvokeServer("Diablos DragonEagleEye",Vector3.new(-92.0999984741211, 189, 16.100000381469727))
+                invokeServer("Diablos DragonEagleEye",Vector3.new(-92.0999984741211, 189, 16.100000381469727))
                 wait(30)
-                InvokeServer("Diablos DragonEagleEye",Vector3.new(-57.599998474121094, 189, 50.20000076293945))
+                invokeServer("Diablos DragonEagleEye",Vector3.new(-57.599998474121094, 189, 50.20000076293945))
                
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
@@ -135,15 +135,15 @@
                 end
 
 
-                InvokeServer("Ginger Bread King TowerFinisher",Vector3.new(-46, 189, 51.5))
+                invokeServer("Ginger Bread King TowerFinisher",Vector3.new(-46, 189, 51.5))
                 wait(3)
-                nvokeServer("Ginger Bread King TowerFinisher",Vector3.new(-33.900001525878906, 189, 52.400001525878906))
+                invokeServer("Ginger Bread King TowerFinisher",Vector3.new(-33.900001525878906, 189, 52.400001525878906))
                 wait(3)
-                InvokeServer("Ginger Bread King TowerFinisher",Vector3.new(-24.299999237060547, 189, 52.099998474121094))
+                invokeServer("Ginger Bread King TowerFinisher",Vector3.new(-24.299999237060547, 189, 52.099998474121094))
                 wait(3)
-                InvokeServer("Ginger Bread King TowerFinisher",Vector3.new(-95.4000015258789, 189, 43.79999923706055))
+                invokeServer("Ginger Bread King TowerFinisher",Vector3.new(-95.4000015258789, 189, 43.79999923706055))
                 wait(1)
-                InvokeServer("Ginger Bread King TowerFinisher",Vector3.new(-105.9000015258789, 189, 43.20000076293945))
+                invokeServer("Ginger Bread King TowerFinisher",Vector3.new(-105.9000015258789, 189, 43.20000076293945))
                 local towers = game.Workspace.Towers -- Замените на ваш объект или переменную
                 local instance_names = {}
                 local executionTimese = 150 -- Замените на желаемое время выполнения в секундах
