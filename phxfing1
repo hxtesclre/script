@@ -164,10 +164,10 @@
                 local gameOverOptionsService = knitService:WaitForChild("GameOverOptionsService")
                 local votingSystemPath = game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE")
 
-                wait(175)
+                wait(160)
                 game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("GameOverOptionsService"):WaitForChild("RF"):WaitForChild("voteAgain"):InvokeServer()
 
-                wait(15)
+                wait(7)
                 local args = {
                 [1] = "Anime4",
                 [2] = {
@@ -178,7 +178,7 @@
 
                 game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(unpack(args))
 
-                wait(30)
+                wait(20)
                 game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(0)
         end
     end)
