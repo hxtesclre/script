@@ -84,7 +84,7 @@
     upgrade_button.Size = UDim2.new(0.3 * guiScale, 0, 0, 50 * guiScale)
     upgrade_button.Parent = gui
     upgrade_button.MouseButton1Click:Connect(function()
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.1"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(0)
+        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("rudolph101_voting-system@0.1.11"):WaitForChild("voting-system"):WaitForChild("__comm__"):WaitForChild("RE"):WaitForChild("Vote"):FireServer(0)
         while true do
             local replicatedStorage = game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("_Index"):WaitForChild("rudolph101_tower-defence-towers@0.2.1"):WaitForChild("tower-defence-towers"):WaitForChild("Shared"):WaitForChild("TowerPlacement"):WaitForChild("__comm__"):WaitForChild("RF")
             local invokeServer = function(towerName, position)
