@@ -171,8 +171,8 @@
                 local args = {
                 [1] = "Anime4",
                 [2] = {
-                ["InfiniteMode"] = false,
-                ["Level"] = 1
+                ["Level"] = 1,
+                ["InfiniteMode"] = false
                       } 
                 }
 
