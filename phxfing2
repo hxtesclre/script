@@ -159,10 +159,10 @@
                     end
                 end
 
-                wait(195)
+                wait(185)
                 game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("GameOverOptionsService"):WaitForChild("RF"):WaitForChild("voteAgain"):InvokeServer()
 
-                wait(15)
+                wait(10)
                 local args = {
                 [1] = "Anime4",
                 [2] = {
