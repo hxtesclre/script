@@ -158,7 +158,7 @@ local towerConfigurations = {
             }
         },
 
-    ["DeathSinger"] = {
+    ["Death Singer"] = {
             basePrice = {Coins = 25008, Gems = 15008},
             suffixes = {
                 ["BattleReady1"] = {Coins = 25008, Gems = 15008},
