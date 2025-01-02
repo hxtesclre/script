@@ -523,7 +523,7 @@ local towerConfigurations = {
             }
         },
 
-    ["GingerBreadKing"] = {
+    ["Ginger Bread King"] = {
             basePrice = {Coins = 2024, Gems = 1024},
             suffixes = {
                 ["BattleReady1"] = {Coins = 2024, Gems = 1024},
