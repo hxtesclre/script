@@ -135,7 +135,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 75006, Gems = 55006},
             }
         },
-    ["Mutant Indominus"] = {
+    ["MutantIndominus"] = {
             basePrice = {Coins = 60007, Gems = 50007},
             suffixes = {
                 ["BattleReady1"] = {Coins = 60007, Gems = 50007},
