@@ -1,5 +1,5 @@
 local towerConfigurations = {
-    ["Rage Claw"] = {
+    ["RageClaw"] = {
             basePrice = {Coins = 60001, Gems = 50001},
             suffixes = {
                 ["BattleReady1"] = {Coins = 60001, Gems = 50001},
