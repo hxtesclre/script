@@ -1,0 +1,3649 @@
+local l_Players_0 = game:GetService("Players");
+local l_ReplicatedStorage_0 = game:GetService("ReplicatedStorage");
+local v2 = require(game.ReplicatedStorage.Packages.PlayerStores);
+local v3 = require(game.ReplicatedStorage.Packages.Signal);
+local v4 = require(l_ReplicatedStorage_0.SharedModules.TowerDefence);
+local v5 = require(l_ReplicatedStorage_0.Packages.Utils);
+local v6 = require(l_ReplicatedStorage_0.SharedModules.ItemUiAssetGetter);
+local v7 = require(l_ReplicatedStorage_0.SharedModules.Particles.ParticleBurst);
+local v8 = require(l_ReplicatedStorage_0.SharedModules.ItemDataGetter);
+local l_TowerModelDataController_0 = v4.TowerModelDataController;
+local _ = require(game.ReplicatedStorage.Packages.Promise);
+local _ = v2.Types;
+local v12 = {};
+v12.__index = v12;
+v12.new = function(v13) --[[ Line: 22 ]] --[[ Name: new ]]
+    local v14 = {};
+    local v15 = 1;
+    while true do
+        local l_v13_FirstChild_0 = v13:FindFirstChild("Listing" .. v15, true);
+        if l_v13_FirstChild_0 then
+            v15 = v15 + 1;
+            table.insert(v14, l_v13_FirstChild_0);
+        else
+            break;
+        end;
+    end;
+    local v17 = setmetatable({
+        model = v13, 
+        listingParts = v14, 
+        listingModels = {}, 
+        ownerNameLabel = v13:FindFirstChild("OwnerName", true), 
+        PromptTriggered = v3.new(), 
+        ListingClicked = v3.new()
+    }, v12);
+    local v18 = Instance.new("ProximityPrompt", v13);
+    v18.RequiresLineOfSight = false;
+    v17.proximityPrompt = v18;
+    v18.Triggered:Connect(function() --[[ Line: 52 ]]
+        v17.PromptTriggered:Fire();
+    end);
+    v17.onPurchase = {};
+    for _, v20 in pairs(v13:GetDescendants()) do
+        if v20.Name == "OnPurchase" then
+            local v21 = v20:GetAttribute("CurrencyId") or "Coins";
+            v17.onPurchase[v21] = v7.new(v20);
+        end;
+    end;
+    v17:setOwner(nil);
+    return v17;
+end;
+local v22 = {};
+getModel = function(v23) --[[ Line: 72 ]] --[[ Name: getModel ]]
+    if not v22[v23] then
+        v22[v23] = l_TowerModelDataController_0:getModel(v23, 1):andThen(function(v24) --[[ Line: 78 ]]
+            for _, v26 in pairs(v24:GetDescendants()) do
+                if v26:IsA("ParticleEmitter") or v26:IsA("Beam") or v26:IsA("Motor6D") or v26:IsA("PointLight") or v26:IsA("SpotLight") then
+                    v26:Destroy();
+                elseif v26:IsA("BasePart") then
+                    v26.Anchored = true;
+                end;
+            end;
+            v24.PrimaryPart.Anchored = true;
+            local v27 = 2 / v24:GetExtentsSize().Y;
+            v5.ModelUtils:scaleModel(v24, v27);
+            return v24;
+        end);
+    end;
+    return v22[v23]:andThen(function(v28) --[[ Line: 103 ]]
+        print("Getting clone", v23);
+        return v28:Clone();
+    end);
+end;
+v12.setStoreData = function(v29, v30) --[[ Line: 110 ]] --[[ Name: setStoreData ]]
+    local v31 = tick();
+    v29.updatedAt = v31;
+    for v32, v33 in pairs(v29.listingParts) do
+        local l_listingModels_0 = v29.listingModels;
+        local v35 = v30[v32] or {};
+        local l_Listing_0 = v35.Listing;
+        local _ = v35.Id;
+        local v38 = v29.listingModels[v32];
+        local v39 = l_Listing_0 and l_Listing_0.ItemData.ItemId;
+        local v40 = l_Listing_0 and l_Listing_0.PurchaseMethod.PurchaseData.ItemId;
+        local v41 = l_Listing_0 and l_Listing_0.PurchaseMethod.PurchaseData.Amount;
+        local v42 = {
+            Default = Color3.new(0.607843, 0.603921, 0.603921), 
+            Robux = Color3.fromRGB(56, 201, 95), 
+            Coins = Color3.fromRGB(255, 176, 0), 
+            Gems = Color3.fromRGB(0, 255, 255)
+        };
+        local v43 = v42[v40] or v42.Default;
+        local l_FirstChild_0 = v29.model:FindFirstChild("Pad" .. v32, true);
+        if l_FirstChild_0 then
+            l_FirstChild_0.Color = v43;
+            for _, v46 in pairs(l_FirstChild_0:GetDescendants()) do
+                if v46:IsA("TextLabel") then
+                    v46.TextColor3 = Color3.new(1, 1, 1);
+                    v46.LineHeight = 1;
+                    if v46.Name == "Name" then
+                        v46.Text = v39 and v6:getName(v39) or "";
+                    elseif v46.Name == "Price" then
+                        v46.Text = v41 and v5.FormatUtils:formatNumber(v41) or "";
+                    end;
+                elseif v46:IsA("UIGradient") then
+                    v46.Color = ColorSequence.new(v43, v5.Color3Utils:addToChannels(v43, -0.05));
+                elseif v46:IsA("BillboardGui") then
+                    v46.AlwaysOnTop = true;
+                end;
+            end;
+        end;
+        local l_FirstChild_1 = v29.model:FindFirstChild("Frame" .. v32, true);
+        if l_FirstChild_1 then
+            for _, v49 in pairs(l_FirstChild_1:GetDescendants()) do
+                if v49:IsA("BasePart") then
+                    v49.Color = v43;
+                elseif v49:IsA("Decal") then
+                    v49.Texture = v40 and v6:getThumbnail(v40) or "";
+                end;
+            end;
+        end;
+        if l_Listing_0 then
+            local l_ItemId_0 = l_Listing_0.ItemData.ItemId;
+            local v51 = v8:_getAttribute(l_ItemId_0, "UnrankedTowerId", l_ItemId_0);
+            local v52 = v4.BaseTowerDataGetter:isTower(v51 .. " Aux") and v51 .. " Aux" or v51;
+            if not v38 or v38.Name ~= v52 then
+                getModel(v52):andThen(function(v53) --[[ Line: 181 ]]
+                    v53.Parent = v29.model;
+                    v53.Name = v52;
+                    local v54 = v5.ModelUtils:getChildHeight(v53, v53.PrimaryPart);
+                    local l_Y_0 = v33.Size.Y;
+                    v53:PivotTo(v33:GetPivot() + Vector3.new(0, -l_Y_0 / 2 + v54, 0));
+                    if l_listingModels_0[v32] then
+                        l_listingModels_0[v32]:Destroy();
+                    end;
+                    if v29.updatedAt == v31 then
+                        l_listingModels_0[v32] = v53;
+                        return;
+                    else
+                        v53:Destroy();
+                        return;
+                    end;
+                end, function() --[[ Line: 201 ]]
+                    print("Reject");
+                end);
+            end;
+        elseif v38 then
+            v29.listingModels[v32] = nil;
+            v38:Destroy();
+        end;
+    end;
+end;
+v12.setOwner = function(v56, v57) --[[ Line: 217 ]] --[[ Name: setOwner ]]
+    v56.ownerId = v57;
+    if v56.ownerNameLabel then
+        if v57 then
+            for _, v59 in pairs(l_Players_0:GetPlayers()) do
+                if v59.UserId == v57 then
+                    v56.ownerNameLabel.Text = v59.Name:upper();
+                    break;
+                end;
+            end;
+        else
+            v56.ownerNameLabel.Text = "UNOWNED";
+        end;
+    end;
+    v56.proximityPrompt.ActionText = v57 and "Open Store" or "Claim";
+end;
+v12.purchaseParticles = function(v60, v61) --[[ Line: 240 ]] --[[ Name: purchaseParticles ]]
+    if v60.onPurchase[v61] then
+        v60.onPurchase[v61]:burst();
+    end;
+end;
+v12.getOwner = function(v62) --[[ Line: 246 ]] --[[ Name: getOwner ]]
+    return v62.ownerId;
+end;
+return v12;
+
+-- // Function Dumper made by King.Kevin
+-- // Script Path: ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth
+
+--[[
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x006ecb69271c6af0
+        1 [table]:
+        PromptTriggered [table] table: 0xe10ab1324225bc90
+            1 [table]:
+            _handlerListHead [table] table: 0x7d8756c777d7b640
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x329642db1c675b80
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x3763197456fc0fc0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xed3dc9a5f8438050
+            1 [table]:
+            Gems [table] table: 0x5f84ac2136f12e30
+                1 [table]:
+                sounds [table] table: 0x94db2e6f232e3d60
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe5ed004871a2e410
+                7 [table]:
+                particleEmitters [table] table: 0x8bd77b96bb4e1270
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xbc755b4fe0c11350
+                1 [table]:
+                sounds [table] table: 0x4a53a3960c59aa80
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xb76cf57943f0a1b0
+                7 [table]:
+                particleEmitters [table] table: 0x2a4470ad6ebfef90
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xef4841c8af1814e0
+                1 [table]:
+                sounds [table] table: 0x199bb80aeb817bd0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x0820efe34a189ec0
+                7 [table]:
+                particleEmitters [table] table: 0xdb087a0a25171120
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth13
+        7 [number] = 1735841446.0270538
+        8 [table]:
+        listingModels [table] table: 0x307de70291bbe5e0
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0xe71eada398f60390
+        1 [table]:
+        PromptTriggered [table] table: 0x5e02c7f85d438db0
+            1 [table]:
+            _handlerListHead [table] table: 0xe1b68cfa9d312760
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xdeb612e5bcddaca0
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x14eb574a3a5638e0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x886d885fe73cb970
+            1 [table]:
+            Gems [table] table: 0x3cb4b4ebce6b5ed0
+                1 [table]:
+                sounds [table] table: 0x4a530229ca840e00
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x365cd03d6b044530
+                7 [table]:
+                particleEmitters [table] table: 0xaf47740c05f5cb10
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x933559e5fa9ae870
+                1 [table]:
+                sounds [table] table: 0xe1cb3d1fa537c3a0
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x90dd0b04ba59b650
+                7 [table]:
+                particleEmitters [table] table: 0xcec7617777c67cb0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x43f0934ec642d580
+                1 [table]:
+                sounds [table] table: 0x3c942880ed2fe0f0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe51815bd23ad6fe0
+                7 [table]:
+                particleEmitters [table] table: 0x7c007feb8ced39c0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth5
+        7 [number] = 1735839067.7410772
+        8 [table]:
+        listingModels [table] table: 0x5a8df294ff5a4680
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x7690883dd8dd37b0
+        1 [table]:
+        PromptTriggered [table] table: 0xff6724f35fdd8150
+            1 [table]:
+            _handlerListHead [table] table: 0x7e60ebe75b1bd300
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xbd52ee03fcbac840
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x011de6517a3b5c80
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [number] = 5466732724
+        6 [table]:
+        onPurchase [table] table: 0x8b3a6c419167a510
+            1 [table]:
+            Gems [table] table: 0x59e7b3c66a31faf0
+                1 [table]:
+                sounds [table] table: 0xaa9e2a9f85891220
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xd70e5db44900b8d0
+                7 [table]:
+                particleEmitters [table] table: 0x6e120876d4136f30
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x82779e9fbb627410
+                1 [table]:
+                sounds [table] table: 0x4c103f5197597740
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xa58c62ad66be8270
+                7 [table]:
+                particleEmitters [table] table: 0xcfa4c57a45c31050
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xed27955b125939a0
+                1 [table]:
+                sounds [table] table: 0x1bdd35190f602c90
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x16c14b0c51a8eb80
+                7 [table]:
+                particleEmitters [table] table: 0x18eafefdcce815e0
+                    1 [Instance] = ParticleEmitter
+        7 [Instance] = Booth3
+        8 [number] = 1735841356.4405885
+        9 [table]:
+        listingModels [table] table: 0x227b7bda397fcaa0
+            1 [Instance] = Caveman
+        10 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x023bac3418b82b50
+        1 [table]:
+        PromptTriggered [table] table: 0x60d039d69df8f570
+            1 [table]:
+            _handlerListHead [table] table: 0x9ed854081ae57f20
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [number] = 4328222909
+        3 [table]:
+        ListingClicked [table] table: 0x53dc4efe3c474460
+            1 [boolean] = false
+        4 [table]:
+        listingParts [table] table: 0x17ac8218b9e1e0a0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        5 [Instance] = OwnerName
+        6 [table]:
+        onPurchase [table] table: 0x6280c1a843697130
+            1 [table]:
+            Gems [table] table: 0xff4a32dcaa174690
+                1 [table]:
+                sounds [table] table: 0xb52f496a77b265c0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x64b3990d090bdcf0
+                7 [table]:
+                particleEmitters [table] table: 0x82996772a42e22d0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x9dc59e1579a70030
+                1 [table]:
+                sounds [table] table: 0xc8af3c4b457ceb60
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xd73bc25a36d48e10
+                7 [table]:
+                particleEmitters [table] table: 0x681d6a60f3dc2470
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x2881499462bc1d40
+                1 [table]:
+                sounds [table] table: 0x7a6e36ce4d6548b0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x367be3a68fe397a0
+                7 [table]:
+                particleEmitters [table] table: 0x3d5201c7ecb50180
+                    1 [Instance] = ParticleEmitter
+        7 [Instance] = Booth2
+        8 [number] = 1735841687.8141894
+        9 [table]:
+        listingModels [table] table: 0x11c4facf7b50ae40
+            1 [Instance] = AquaBot
+            2 [Instance] = AquaBot
+            3 [Instance] = AbyssalAngler
+            4 [Instance] = SkybornPiercer1
+        10 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x3be150ad1864ef70
+        1 [table]:
+        PromptTriggered [table] table: 0x3c1b34dcdbd39910
+            1 [table]:
+            _handlerListHead [table] table: 0xb98f1193e520dac0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xe48feff77c4df000
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xe6fae382f7e71440
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xce286f31112c8cd0
+            1 [table]:
+            Gems [table] table: 0x5e930994c5fa32b0
+                1 [table]:
+                sounds [table] table: 0x807cad732597d9e0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x90699ba3d7356090
+                7 [table]:
+                particleEmitters [table] table: 0x934fc148946536f0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xff1adeaa37a83fd0
+                1 [table]:
+                sounds [table] table: 0x25c2387c6b47af00
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x76f66651cac9ea30
+                7 [table]:
+                particleEmitters [table] table: 0xecce0a08ad392810
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x0fda240fced2f160
+                1 [table]:
+                sounds [table] table: 0xd6bab7f5a33fc450
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x253580def1a18340
+                7 [table]:
+                particleEmitters [table] table: 0x420ffce0349e0da0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth14
+        7 [number] = 1735842627.028649
+        8 [table]:
+        listingModels [table] table: 0x7c9505b9b934a260
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0xfa51fe523b11cc70
+        1 [table]:
+        PromptTriggered [table] table: 0x4b284a2dfc013610
+            1 [table]:
+            _handlerListHead [table] table: 0xe3bf8692f3d43bc0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x28bc18101e789100
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xbd4d3063d8ffb540
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x1718be2e62202dd0
+            1 [table]:
+            Gems [table] table: 0x95a27ebbccf193b0
+                1 [table]:
+                sounds [table] table: 0x5ecd1c7456cf3ae0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x5bd9ea80e9c10190
+                7 [table]:
+                particleEmitters [table] table: 0xddff5259875097f0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x362b51b95aa5dcd0
+                1 [table]:
+                sounds [table] table: 0xe072c94f661d0000
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x31451770d7fccb30
+                7 [table]:
+                particleEmitters [table] table: 0x307fb92794bf4910
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x416a773e431d9260
+                1 [table]:
+                sounds [table] table: 0x8f8ae6f46fa6e550
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe20611e9e01a6440
+                7 [table]:
+                particleEmitters [table] table: 0x8d3fb3c30d26aea0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth15
+        7 [number] = 1735842607.6652358
+        8 [table]:
+        listingModels [table] table: 0xb6a4b4495dbb0360
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x9686826979765010
+        1 [table]:
+        PromptTriggered [table] table: 0xccfee2c23c0a4230
+            1 [table]:
+            _handlerListHead [table] table: 0x1109a634c42917e0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xcfed1ddb5e83bd20
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x8212ac0418a1a960
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xf6c3be95322d29f0
+            1 [table]:
+            Gems [table] table: 0x6b78ff31e4d48f50
+                1 [table]:
+                sounds [table] table: 0x39a41f6f06f5de80
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xf8105568484435b0
+                7 [table]:
+                particleEmitters [table] table: 0x7f28134675547b90
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x01fe8c2016e378f0
+                1 [table]:
+                sounds [table] table: 0x5cda6a660a060c20
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x23e6287ee997c6d0
+                7 [table]:
+                particleEmitters [table] table: 0xddb1bd8d4c82ed30
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xd43ef688edfaa600
+                1 [table]:
+                sounds [table] table: 0x8e6105ca81dd1170
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x8b575ef3d03ff860
+                7 [table]:
+                particleEmitters [table] table: 0xae6d2b2a537b4a40
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth12
+        7 [number] = 1735842626.1095777
+        8 [table]:
+        listingModels [table] table: 0xa50bb0529b96f700
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x8722fb87a72b2430
+        1 [table]:
+        PromptTriggered [table] table: 0xa04e01b9040ff1d0
+            1 [table]:
+            _handlerListHead [table] table: 0x0c52c6bc74620380
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x515a50cdd28d98c0
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x7297886f28a4ed00
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x2279b91bfef65590
+            1 [table]:
+            Gems [table] table: 0xcab07c8834bf8b70
+                1 [table]:
+                sounds [table] table: 0x1c17dd59dad362a0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x64a8917178792950
+                7 [table]:
+                particleEmitters [table] table: 0x1c832b2d3b39dfb0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x6b2e6859e6eec490
+                1 [table]:
+                sounds [table] table: 0xb987f21bca03e7c0
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xfa32c4628b8952f0
+                7 [table]:
+                particleEmitters [table] table: 0x7f1b203c6d8920d0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xbbed7220af10aa20
+                1 [table]:
+                sounds [table] table: 0x6ac7e8def3f83d10
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x89f4dff600605c00
+                7 [table]:
+                particleEmitters [table] table: 0xafc405b7a551c660
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth11
+        7 [number] = 1735842226.3462594
+        8 [table]:
+        listingModels [table] table: 0xf0be349cd5ed1b20
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0xec2aad730a2fa080
+        1 [table]:
+        PromptTriggered [table] table: 0x8d02b789b76876a0
+            1 [table]:
+            _handlerListHead [table] table: 0x2fa72943a4670fa0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x958d628d61f01d50
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xb5be674be8516990
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x58d7ebd73d19ca60
+            1 [table]:
+            Gems [table] table: 0x2e98844be45a13c0
+                1 [table]:
+                sounds [table] table: 0x073c1219d9bee330
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x0aa0e0623b5e9e20
+                7 [table]:
+                particleEmitters [table] table: 0x18c844357e192800
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xe853cb53aab530b0
+                1 [table]:
+                sounds [table] table: 0xe6bdbd584f0c6c50
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x5979a184498cfe90
+                7 [table]:
+                particleEmitters [table] table: 0xb24e713f8eada5a0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x7f52a3d6ec23dab0
+                1 [table]:
+                sounds [table] table: 0xb4712890c0d681e0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe46b05859176d890
+                7 [table]:
+                particleEmitters [table] table: 0x4b0d7fa417c24ef0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth9
+        7 [number] = 1735842371.0579
+        8 [table]:
+        listingModels [table] table: 0x8f97829cc4a1abb0
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x5196887a2bf26ca0
+        1 [table]:
+        PromptTriggered [table] table: 0xf3aa342345272240
+            1 [table]:
+            _handlerListHead [table] table: 0x733eebae73309430
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x863e023417957970
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xc00bd661284bcdb0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xfc5a8cce033c4e00
+            1 [table]:
+            Gems [table] table: 0x6921a35e34752fe0
+                1 [table]:
+                sounds [table] table: 0x25832b9018639ed0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x0a175c8f7925f9c0
+                7 [table]:
+                particleEmitters [table] table: 0x757ee8bcbefc3420
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xcca99e87ed99bd00
+                1 [table]:
+                sounds [table] table: 0x97f33f410932a870
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xa48773544f896760
+                7 [table]:
+                particleEmitters [table] table: 0x9af8f52a6aaa9140
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x99ed851aa46e7650
+                1 [table]:
+                sounds [table] table: 0xd8c80528f74a9580
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x5bc46914474e3cb0
+                7 [table]:
+                particleEmitters [table] table: 0x29bcff4525c2f290
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth8
+        7 [number] = 1735839067.737198
+        8 [table]:
+        listingModels [table] table: 0xa1227a4a94a6a750
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0xcf45ac6fe9d28840
+        1 [table]:
+        PromptTriggered [table] table: 0xa27f385e34de3e60
+            1 [table]:
+            _handlerListHead [table] table: 0xca4b4419ad1eabd0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x97636ea5c1bfe510
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x7350920808454150
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x6182f1fb3502d220
+            1 [table]:
+            Gems [table] table: 0x03ff43177c502b80
+                1 [table]:
+                sounds [table] table: 0xd22649291869baf0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x6dd19915bfe055e0
+                7 [table]:
+                particleEmitters [table] table: 0xc7aa77c2fa17dfc0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x697f9e6c2c7ea120
+                1 [table]:
+                sounds [table] table: 0x88a43fba2b19b410
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x8859f25b89b21300
+                7 [table]:
+                particleEmitters [table] table: 0x79306a932ae68d60
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xbabfa98c9466c270
+                1 [table]:
+                sounds [table] table: 0x65e126c6a141f9a0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x3a95d3dd10cb5050
+                7 [table]:
+                particleEmitters [table] table: 0x34eb712fd3cfa6b0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth10
+        7 [number] = 1735841830.923884
+        8 [table]:
+        listingModels [table] table: 0xd248fa76ab7a5370
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x2e2c4f858e3f8460
+        1 [table]:
+        PromptTriggered [table] table: 0xb50c2554ecfb1a00
+            1 [table]:
+            _handlerListHead [table] table: 0xa695e063ef05aff0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xe599cf4f92613130
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xe95892b2c8c0b570
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xb2ff6d00670a25c0
+            1 [table]:
+            Gems [table] table: 0x10b2298c3c2bd7a0
+                1 [table]:
+                sounds [table] table: 0x43d6ad4258ae8690
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x30ab9b53f9eec180
+                7 [table]:
+                particleEmitters [table] table: 0xb6c5f1293a0a73e0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xea28de7b4c8374c0
+                1 [table]:
+                sounds [table] table: 0xa4453835697f4030
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x8d337621ab9d3f20
+                7 [table]:
+                particleEmitters [table] table: 0xd4590a18f6dd8900
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x4372d4e7443c4e10
+                1 [table]:
+                sounds [table] table: 0x1296c7bd73445d40
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xde6b90c6e0c4e470
+                7 [table]:
+                particleEmitters [table] table: 0x0705fc919db5ba50
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth6
+        7 [number] = 1735839067.7364662
+        8 [table]:
+        listingModels [table] table: 0x4bb075786d51ff10
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x523977f6802915c0
+        1 [table]:
+        PromptTriggered [table] table: 0xd7269194236e83e0
+            1 [table]:
+            _handlerListHead [table] table: 0x56dbb2ce8f6a3d50
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x639bc4b8b4925690
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x5f4f3cde4eb332d0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xaaf2466b56f6a7a0
+            1 [table]:
+            Gems [table] table: 0x3854ea9f5e3cd900
+                1 [table]:
+                sounds [table] table: 0xf9cf502542e33470
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x393d02ce917ddb60
+                7 [table]:
+                particleEmitters [table] table: 0xbadbde3014256d40
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x65d6e7d64e8e16a0
+                1 [table]:
+                sounds [table] table: 0x9c2f670cb50b4990
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x9fbd5918a38d8080
+                7 [table]:
+                particleEmitters [table] table: 0xa59bb3230572f2e0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xd510c15a76255ff0
+                1 [table]:
+                sounds [table] table: 0x296c5e8c5bf46f20
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x6e7863613955e5d0
+                7 [table]:
+                particleEmitters [table] table: 0x096389b8fc5c3030
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth7
+        7 [number] = 1735839067.7361777
+        8 [table]:
+        listingModels [table] table: 0xc5b5a08171eeccf0
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0xe3f0f6eeb02c29e0
+        1 [table]:
+        PromptTriggered [table] table: 0x419b521fcd659780
+            1 [table]:
+            _handlerListHead [table] table: 0xe500b9d2cd175970
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xb02d60376cf742b0
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x3efc3bc5e24c26f0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x8657b67d871a9340
+            1 [table]:
+            Gems [table] table: 0x270285c9de594520
+                1 [table]:
+                sounds [table] table: 0x5f7e148bb2be1810
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x5c6ae3e0c35abf00
+                7 [table]:
+                particleEmitters [table] table: 0xe34e5d8b241fe160
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xb69448eb92890240
+                1 [table]:
+                sounds [table] table: 0xf9f1c1bd8511edb0
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xbee41c90d18b8ca0
+                7 [table]:
+                particleEmitters [table] table: 0xb8ccb345d7a86680
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x77db7f5126202390
+                1 [table]:
+                sounds [table] table: 0x0e3ddf371dc9cac0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe9a1091ffb7371f0
+                7 [table]:
+                particleEmitters [table] table: 0x0b8eab2ebcc70fd0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth21
+        7 [number] = 6087790852
+        8 [number] = 1735839067.73563
+        9 [table]:
+        listingModels [table] table: 0x37078de60fa47090
+            1 [Instance] = AbyssalKraken
+            2 [Instance] = AbyssalLeviathan
+            3 [Instance] = Buster Bunny
+            4 [Instance] = AbyssalAngler
+        10 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x152779d860f72d80
+        1 [table]:
+        PromptTriggered [table] table: 0xd471dbe18f207ba0
+            1 [table]:
+            _handlerListHead [table] table: 0x8878be14333dc510
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xcd7c048e4c98de50
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x1db3b42392496a90
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xf7a0b777c9018f60
+            1 [table]:
+            Gems [table] table: 0x71e9e0f39273d0c0
+                1 [table]:
+                sounds [table] table: 0xa003173de666fc30
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xf3974b191126a320
+                7 [table]:
+                particleEmitters [table] table: 0x71b9192657f11500
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x976df401e29c1e60
+                1 [table]:
+                sounds [table] table: 0x5e8b6247b7376150
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x5a07102e0694e840
+                7 [table]:
+                particleEmitters [table] table: 0xdb3eb45f65a52aa0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x24a1fe78fa6b17b0
+                1 [table]:
+                sounds [table] table: 0x0fc21cbadf4ec6e0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x0cd65591b94e9d90
+                7 [table]:
+                particleEmitters [table] table: 0x22fed3db7cca0bf0
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth20
+        7 [number] = 1735843885.6173322
+        8 [table]:
+        listingModels [table] table: 0x2464a8fcd159a4b0
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x3841e2a130da51a0
+        1 [table]:
+        PromptTriggered [table] table: 0x2b3f1ac86ddedf40
+            1 [table]:
+            _handlerListHead [table] table: 0x8cb3bf8f651b5130
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x6fab59230cbd7a70
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x52e02641e10cf550
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xa708b16deb048b00
+            1 [table]:
+            Gems [table] table: 0xc2bf47f9422d2ce0
+                1 [table]:
+                sounds [table] table: 0x9dd4c6a7366c53d0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x62d9e9ae60edf6c0
+                7 [table]:
+                particleEmitters [table] table: 0x9ce0135c84143920
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x643f70e7d1813a00
+                1 [table]:
+                sounds [table] table: 0x3e660a29e51a9570
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xc355dcc556b16460
+                7 [table]:
+                particleEmitters [table] table: 0x626a28149be2ce40
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x317e7e02ba560b50
+                1 [table]:
+                sounds [table] table: 0x60a6e1c0dd435280
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x3015d62b7fc5b9b0
+                7 [table]:
+                particleEmitters [table] table: 0xd12b12d43ccaf790
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth19
+        7 [number] = 1735843148.9435585
+        8 [table]:
+        listingModels [table] table: 0x09b2cfcca37eb850
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x5174934fa591c860
+        1 [table]:
+        PromptTriggered [table] table: 0x106c551d7aa05600
+            1 [table]:
+            _handlerListHead [table] table: 0x5764b19975d3dbf0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x00580b399938fd30
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xce1746a7570b0170
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xd23d82fbfc5f91c0
+            1 [table]:
+            Gems [table] table: 0x75ee9657b5162ba0
+                1 [table]:
+                sounds [table] table: 0xac87358da07ada90
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x8c0afe9677e17d80
+                7 [table]:
+                particleEmitters [table] table: 0x551362a132d307e0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0xcb69628de44420c0
+                1 [table]:
+                sounds [table] table: 0x0b17d8bbf0548c30
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x69830a5b4134f320
+                7 [table]:
+                particleEmitters [table] table: 0x079b57d062e34500
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x382e8ced2d6d0210
+                1 [table]:
+                sounds [table] table: 0xfbc61226e802e940
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x3ecae01e4e8eb070
+                7 [table]:
+                particleEmitters [table] table: 0xa6d25c4fab8a6e50
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth18
+        7 [number] = 1735843343.9981165
+        8 [table]:
+        listingModels [table] table: 0x63619d701477b310
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x4d3d6d65f7ba4c00
+        1 [table]:
+        PromptTriggered [table] table: 0x24db1754bafeba20
+            1 [table]:
+            _handlerListHead [table] table: 0x38d6cd0227f8a790
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x73e0ecafdb5f10d0
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x6fb1a73281060d10
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x228cabe1bc44ade0
+            1 [table]:
+            Gems [table] table: 0x865bca6a872f0f40
+                1 [table]:
+                sounds [table] table: 0xf02830239055beb0
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xa0bc7e1321e381a0
+                7 [table]:
+                particleEmitters [table] table: 0xc0a405c8c3341380
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x69c3fd7b945f5ce0
+                1 [table]:
+                sounds [table] table: 0x0aa21db5a07a83d0
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x0e3a6b4013d346c0
+                7 [table]:
+                particleEmitters [table] table: 0x6516d69eaee6c920
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xd49be3860fb61630
+                1 [table]:
+                sounds [table] table: 0x5d652abc280d6560
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x5f7145a8aa8b9c10
+                7 [table]:
+                particleEmitters [table] table: 0x92571851c98f2a70
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth17
+        7 [number] = 1735843150.738121
+        8 [table]:
+        listingModels [table] table: 0xf5cf417924128730
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0xebefc99b059ed020
+        1 [table]:
+        PromptTriggered [table] table: 0x59061672e69bddc0
+            1 [table]:
+            _handlerListHead [table] table: 0xe5b62b6df5c693b0
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xdab64059196204f0
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xa8fab8bcd0ff2930
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [number] = 5156907759
+        5 [Instance] = OwnerName
+        6 [table]:
+        onPurchase [table] table: 0x1552ca0f7c4aa980
+            1 [table]:
+            Gems [table] table: 0xb6946382b4e80360
+                1 [table]:
+                sounds [table] table: 0x4f70b3c540cf5250
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x4d6ffea9f228b540
+                7 [table]:
+                particleEmitters [table] table: 0x2c4566deb149ffa0
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x14167970443af880
+                1 [table]:
+                sounds [table] table: 0xedfb1f2e705f97f0
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x0eefd32721fe3ae0
+                7 [table]:
+                particleEmitters [table] table: 0x32c511068e396cc0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x47d144f94d932dd0
+                1 [table]:
+                sounds [table] table: 0xb0bcc9ab48079100
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe02fe8c0ea817830
+                7 [table]:
+                particleEmitters [table] table: 0x83001c9a07903610
+                    1 [Instance] = ParticleEmitter
+        7 [Instance] = Booth16
+        8 [number] = 1735841109.6348016
+        9 [table]:
+        listingModels [table] table: 0x48921c6254327ad0
+            1 [Instance] = TheSiren
+            2 [Instance] = Golden Hydro
+            3 [Instance] = Buster Bunny
+        10 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x8842b81d019e1ac0
+        1 [table]:
+        PromptTriggered [table] table: 0xfb6a1c4ca39388e0
+            1 [table]:
+            _handlerListHead [table] table: 0x7b76782b34416650
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0xbe6646571d255390
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0xa9b67afad73effd0
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0xe79ff48939d57ca0
+            1 [table]:
+            Gems [table] table: 0x41cc2104f52b5e00
+                1 [table]:
+                sounds [table] table: 0x0f3955fac1cc0970
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xe3cc84ea306cc060
+                7 [table]:
+                particleEmitters [table] table: 0x0da558d1734c3240
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x2442b632c7fb13a0
+                1 [table]:
+                sounds [table] table: 0x4ea120ec339fc290
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x4d2ad1e9e1398580
+                7 [table]:
+                particleEmitters [table] table: 0xa23573808c7e3fe0
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0x968b3cbfce9250f0
+                1 [table]:
+                sounds [table] table: 0xdfe45f75caf72420
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x9090ab4ea986aed0
+                7 [table]:
+                particleEmitters [table] table: 0xd0f815180b95f530
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth4
+        7 [number] = 1735842244.5602715
+        8 [table]:
+        listingModels [table] table: 0xb75fea21d2fa41f0
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table]:
+    1 [table] table: 0x21b96c4c4c44df60
+        1 [table]:
+        PromptTriggered [table] table: 0x03a3f87e6f7bc500
+            1 [table]:
+            _handlerListHead [table] table: 0x22b8fdb6444bd270
+                1 [function] = Unknown Name
+                2 [boolean] = true
+                3 [table] (Recursive table detected)
+                4 [boolean] = false
+        2 [table]:
+        ListingClicked [table] table: 0x765c0e17a8dc0c30
+            1 [boolean] = false
+        3 [table]:
+        listingParts [table] table: 0x700d42c9b3573070
+            1 [Instance] = Listing1
+            2 [Instance] = Listing2
+            3 [Instance] = Listing3
+            4 [Instance] = Listing4
+        4 [Instance] = OwnerName
+        5 [table]:
+        onPurchase [table] table: 0x4c7080d9f2fca0c0
+            1 [table]:
+            Gems [table] table: 0x27297cdd96f79f30
+                1 [table]:
+                sounds [table] table: 0xeec6dd17bcc32e60
+                    1 [Instance] = Gems
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x09d388ec13cb1510
+                7 [table]:
+                particleEmitters [table] table: 0x2bfa233f5d496370
+                    1 [Instance] = ParticleEmitter
+            2 [table]:
+            Robux [table] table: 0x40a163e7a0b64050
+                1 [table]:
+                sounds [table] table: 0x7144ea2e4c131b80
+                    1 [Instance] = Robux
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0xaf4bc4070dfab6b0
+                7 [table]:
+                particleEmitters [table] table: 0x82703831aeb9fc90
+                    1 [Instance] = ParticleEmitter
+            3 [table]:
+            Coins [table] table: 0xf66c4a5d291fa5e0
+                1 [table]:
+                sounds [table] table: 0x3c00d08355b808d0
+                    1 [Instance] = Coins
+                2 [string] = Burst
+                3 [boolean] = true
+                4 [Instance] = OnPurchase
+                5 [number] = 1
+                6 [table]:
+                beams [table] table: 0x7c93df938a10cfc0
+                7 [table]:
+                particleEmitters [table] table: 0xf4b505ba2721c220
+                    1 [Instance] = ParticleEmitter
+        6 [Instance] = Booth1
+        7 [number] = 1735839067.7304034
+        8 [table]:
+        listingModels [table] table: 0xf134ba610dc48210
+        9 [Instance] = ProximityPrompt
+
+Function Constants: Unknown Name
+    1 [string] = PromptTriggered
+    2 [string] = Fire
+
+====================================================================================================
+
+Function Dump: setStoreData
+
+Function Upvalues: setStoreData
+    1 [table]:
+    1 [table] table: 0x9632a31c8d5d5cd0
+        1 [function] = getEvolutionThumbnail
+        2 [function] = getStat
+        3 [function] = getStatsText
+        4 [function] = getThumbnails
+        5 [function] = getPrice
+        6 [function] = getThumbnail
+        7 [function] = getName
+        8 [function] = getDescriptionAndStats
+        9 [function] = getDescription
+    2 [table]:
+    2 [table] table: 0x376b09a53a7feb10
+        1 [table]:
+        EventUtils [table] table: 0x867d5ee89073a040
+            1 [function] = waitForCondition
+        2 [table]:
+        ModelTweener [table] table: 0x19585c381eaa94e0
+            1 [function] = tween
+        3 [table]:
+        PlayerUtils [table] table: 0x0307b4afe5e254f0
+            1 [function] = bindToPlayer
+        4 [table]:
+        StringUtils [table] table: 0xaed4e12eac057a10
+            1 [function] = addLine
+            2 [function] = insertAtPositions
+            3 [function] = constrainLines
+        5 [table]:
+        ImportUtils [table] table: 0x37977d32a86b3c90
+            1 [function] = requireAll
+            2 [function] = requireFolder
+        6 [table]:
+        RandomPlus [table] table: 0xe869919821de8cf0
+            1 [function] = createBatch
+            2 [function] = _incrementProgress
+            3 [function] = NextInteger
+            4 [function] = NextNumber
+            5 [table] (Recursive table detected)
+            6 [function] = new
+        7 [table]:
+        Find [table] table: 0xba4f3eca1dba3180
+            1 [function] = path
+        8 [table]:
+        BadgeUtils [table] table: 0x4084327656b7a790
+            1 [function] = init
+            2 [table]:
+            Client [table] table: 0xddaf512b0c083460
+                1 [function] = playerHasBadge
+            3 [table]:
+            DataGetter [table] table: 0xf64928f37fdfc920
+                1 [function] = _getAttribute
+                2 [function] = getRobloxBadgeId
+                3 [function] = init
+                4 [function] = isBadge
+                5 [function] = getImage
+                6 [function] = getName
+                7 [function] = getDescription
+            4 [boolean] = false
+        9 [table]:
+        MathsUtils [table] table: 0x6c835854d6fae300
+            1 [function] = multiplyByScalar
+            2 [function] = addConstant
+            3 [function] = getQuadraticRoots
+            4 [function] = applyMultiplication
+            5 [function] = applyAddition
+        10 [table]:
+        ProbabilityUtils [table] table: 0x7afd62eff7f4f720
+            1 [function] = normaliseProbabilities
+            2 [function] = randomDraw
+            3 [function] = drawUniformly
+            4 [function] = getCumulativeProbabilities
+            5 [function] = scaleLuck
+            6 [function] = getProbabilityAsPercentage
+            7 [function] = randomBinaryRoll
+        11 [table]:
+        UserInputUtils [table] table: 0x75802591e79b8730
+            1 [function] = waitForInput
+            2 [function] = waitForClick
+        12 [table]:
+        LogicUtils [table] table: 0xc1b5826b5bf08480
+            1 [function] = doAny
+            2 [function] = doAll
+        13 [table]:
+        Color3Utils [table] table: 0xeaa8da2e11034fe0
+            1 [function] = addToChannels
+            2 [function] = add
+        14 [table]:
+        ModelUtils [table] table: 0xc4dad50c6f80f930
+            1 [function] = setVisibility
+            2 [function] = tweenSize
+            3 [function] = tweenCFrame
+            4 [function] = tweenRigScale
+            5 [function] = getChildHeight
+            6 [function] = scaleRig
+            7 [function] = setAnchored
+            8 [function] = setSize
+            9 [function] = shake
+            10 [function] = tweenPosition
+            11 [function] = scaleCoordinates
+            12 [function] = scaleModel
+        15 [table]:
+        FormatUtils [table] table: 0x022077a0832df950
+            1 [function] = roundNumber
+            2 [function] = formatNumber
+            3 [function] = formatDateAndTime
+            4 [function] = formatMinutes
+            5 [function] = formatTime
+            6 [function] = formatDays
+            7 [function] = formatPercentage
+        16 [table]:
+        CFrameUtils [table] table: 0xfc99b6ecd722d420
+            1 [function] = getHorizontalAngleToPoint
+            2 [function] = getOffset
+        17 [table]:
+        Vector3Utils [table] table: 0x1e120cb977cf53f0
+            1 [function] = mapCoordinates
+            2 [function] = floor
+            3 [function] = abs
+            4 [function] = iterateOverRegion
+            5 [function] = decodeVector
+            6 [function] = hoveringOver
+            7 [function] = roundToTile
+            8 [function] = iterate2DSpiral
+            9 [function] = iterate2DSpiral2
+            10 [function] = get2DSpiral
+            11 [function] = encodeVector
+            12 [function] = ceil
+        18 [table]:
+        TableUtils [table] table: 0x3bfee29232e7b6e0
+            1 [function] = getMax
+            2 [function] = createChecklist
+            3 [function] = findFirstMember
+            4 [function] = getBetweenIndices
+            5 [function] = containedIn
+            6 [function] = deepClone
+            7 [function] = unpack
+            8 [function] = getTopRanked
+            9 [function] = length
+            10 [function] = createN
+            11 [function] = modify
+            12 [function] = map
+            13 [function] = isEmpty
+            14 [function] = find
+            15 [function] = clone
+            16 [function] = getKeys
+            17 [function] = append
+            18 [function] = deepEqual
+            19 [function] = addMissingAttributes
+            20 [function] = getMaxKey
+            21 [function] = getNested
+            22 [function] = getRandomKey
+            23 [function] = keysTo
+            24 [function] = shallowClone
+            25 [function] = traverse
+            26 [function] = incrementNested
+            27 [function] = zero
+            28 [function] = setNested
+            29 [function] = combine
+            30 [function] = filter
+            31 [function] = filterDuplicateValues
+            32 [function] = product
+            33 [function] = appendAll
+            34 [function] = findBy
+            35 [function] = sum
+            36 [function] = buildFrom2
+            37 [function] = shallowEqual
+            38 [function] = apply
+            39 [function] = getValues
+            40 [function] = buildFrom
+        19 [table]:
+        RoactUtils [table] table: 0x243d4e661eed3ed0
+            1 [function] = doPropsDiffer
+            2 [function] = bindFunctionToBinding
+            3 [function] = bindify
+            4 [function] = _addProps
+            5 [function] = safeModify
+            6 [function] = scrollBinding
+            7 [function] = addProperties
+            8 [function] = addChildren
+            9 [function] = doPrimitivesDiffer
+            10 [function] = unwrap
+            11 [function] = createLinkedBinding
+            12 [function] = getScrolledIndex
+            13 [function] = createN
+            14 [function] = safeEqual
+        20 [table]:
+        Lock [table] table: 0xc0fedcd0ac44c9a0
+            1 [function] = destroy
+            2 [function] = isLocked
+            3 [function] = getKeys
+            4 [function] = lock
+            5 [function] = unlock
+            6 [function] = _getKeys
+            7 [table] (Recursive table detected)
+            8 [function] = new
+        21 [table]:
+        InstanceUtils [table] table: 0x020b03232a2d65e0
+            1 [function] = findFirstAncestorWhichIsA
+            2 [function] = toTable
+            3 [function] = getChildrenOfType
+            4 [function] = createInstance
+            5 [function] = getInstancesOfType
+        22 [table]:
+        DateTimeUtils [table] table: 0xb67ff311be7268c0
+            1 [function] = getMonthName
+            2 [function] = getUniqueHourlyKey
+            3 [function] = getHourFromDateTime
+            4 [function] = getMonthNameFromDateTime
+            5 [function] = getMonthFromDateTime
+            6 [function] = getDayFromDateTime
+            7 [function] = formatDate
+            8 [function] = getUniqueDailyKey
+            9 [function] = getYearFromDateTime
+        23 [table]:
+        GuiNavigator [table] table: 0x06ebcfba81798d90
+            1 [function] = destroy
+            2 [table]:
+            Direction [table] table: 0x29e69a5bf7d04c80
+                1 [number] = -2
+                2 [EnumItem] = Enum.KeyCode.DPadUp
+                3 [number] = -1
+                4 [EnumItem] = Enum.KeyCode.DPadRight
+                5 [EnumItem] = Enum.KeyCode.DPadDown
+                6 [EnumItem] = Enum.KeyCode.DPadLeft
+            3 [function] = hasPriority
+            4 [function] = _setActive
+            5 [function] = isActive
+            6 [function] = deactivate
+            7 [function] = setActivated
+            8 [function] = activate
+            9 [table] (Recursive table detected)
+            10 [function] = new
+    3 [table]:
+    3 [table] table: 0xce1d0a0002741110
+        1 [function] = getBaseCategoryId
+        2 [function] = getAttribute
+        3 [function] = registerItems
+        4 [function] = getItemIds
+        5 [function] = integratesInterface
+        6 [function] = _error
+        7 [function] = _getAttribute
+        8 [function] = getRandom
+        9 [function] = _getAttributeByPath
+        10 [function] = _clone
+        11 [function] = isA
+        12 [function] = isItem
+    4 [table]:
+    4 [table] table: 0xe7914bb2e7be5d10
+        1 [table]:
+        TowerRenderController [table] table: 0x3409936dc2e69950
+            1 [function] = setHighlight
+            2 [boolean] = true
+            3 [function] = getTargetType
+            4 [function] = KnitInit
+            5 [function] = getAttachment
+            6 [table]:
+            TowerDeployed [table] table: 0x32494eeb7900ad10
+                1 [boolean] = false
+            7 [table]:
+            AttributesUpdated [table] table: 0x3d6ff13ca6131b70
+                1 [boolean] = false
+            8 [function] = getTotalTowers
+            9 [table]:
+            TowerClicked [table] table: 0xfe7323d3d8b97660
+                1 [boolean] = false
+            10 [function] = getLocalTowerCounts
+            11 [function] = init
+            12 [function] = setTowerVolume
+            13 [function] = toggleUi
+            14 [function] = isDescendantOfTower
+            15 [function] = getTowerRender
+            16 [function] = setParticlesEnabled
+            17 [string] = TowerRenderController
+            18 [function] = setTargetType
+            19 [function] = getLocalTowerCount
+            20 [function] = setAnimationsEnabled
+            21 [function] = getModels
+            22 [table]:
+            TowerDeployedOrRemoved [table] table: 0x6145998adbf8ac00
+                1 [boolean] = false
+        2 [table]:
+        BaseTowerDataGetter [table] table: 0x7fa6777a8c2cae40
+            1 [function] = getModelName
+            2 [function] = _getAttribute
+            3 [function] = getRefundAmount
+            4 [function] = getRarity
+            5 [function] = getOriginalTowerId
+            6 [function] = getVerticalOffset
+            7 [function] = getThumbnail
+            8 [function] = isTower
+            9 [function] = getSacrificeTokens
+            10 [function] = getTags
+            11 [function] = getName
+            12 [function] = getTowerIds
+            13 [function] = init
+            14 [function] = getAnimationId
+            15 [function] = getPlacementId
+            16 [function] = getEvolutionTotal
+            17 [function] = isAux
+            18 [function] = getPlacementClassIds
+            19 [function] = getStats
+            20 [function] = getPointCost
+            21 [function] = getDescription
+            22 [function] = getLimit
+            23 [function] = _getAttributeByPath
+            24 [function] = hasTag
+            25 [function] = _getEvolutionAttribute
+        3 [function] = playerRemoved
+        4 [table]:
+        TowerModelDataController [table] table: 0x30475378df5a6d90
+            1 [string] = TowerModelDataController
+            2 [boolean] = true
+            3 [function] = getMaxRadius
+            4 [function] = KnitInit
+            5 [function] = getModel
+        5 [boolean] = false
+        6 [table]:
+        TowerEquippingController [table] table: 0x5079c4657a4994c0
+            1 [function] = canEquip
+            2 [function] = getMaxEquipSlots
+            3 [function] = unequipFromSlot
+            4 [function] = init
+            5 [function] = getHotbar
+            6 [function] = isEquipped
+            7 [function] = getEquippedTower
+            8 [function] = unequipTower
+            9 [table]:
+            Updated [table] table: 0x4072fe119cc74ff0
+                1 [table]:
+                _handlerListHead [table] table: 0xd058e5c90c32f6e0
+                    1 [function] = Unknown Name
+                    2 [boolean] = true
+                    3 [table] (Recursive table detected)
+                    4 [table]:
+                    _next [table] table: 0xfdf1c9054e5710a0
+                        1 [function] = onHotbarUpdated
+                        2 [boolean] = true
+                        3 [table] (Recursive table detected)
+                        4 [table]:
+                        _next [table] table: 0x6b346728f7529610
+                            1 [function] = Unknown Name
+                            2 [boolean] = true
+                            3 [table] (Recursive table detected)
+                            4 [boolean] = false
+            10 [function] = getUnlockedEquipSlots
+            11 [function] = getEquippedIndex
+            12 [function] = getEquippedTowers
+            13 [function] = equipToSlot
+            14 [function] = _setSlotEquipped
+            15 [function] = getFirstFreeSlot
+            16 [function] = equipToFreeSlot
+        7 [table]:
+        TowerSacrificeController [table] table: 0xecf3b25382ac5400
+            1 [function] = sacrifice
+            2 [table]:
+            TowerSacrificed [table] table: 0xbdb773e598e84300
+                1 [boolean] = true
+                2 [boolean] = false
+                3 [Instance] = TowerSacrificed
+            3 [table]:
+            ClientComm [table] table: 0x8fc76468d034ff30
+                1 [Instance] = __comm__
+                2 [boolean] = false
+            4 [function] = sacrificeTowers
+        8 [table]:
+        TowerStatGetter [table] table: 0x426608f1507d9660
+            1 [function] = boostBaseStats
+            2 [function] = getBaseStats
+            3 [function] = towerHasComponent
+            4 [function] = init
+            5 [function] = calculateCompoundStats
+            6 [function] = getCompoundStat
+            7 [function] = getCompoundStats
+            8 [function] = boostBaseComponentStats
+        9 [function] = playerInit
+        10 [table]:
+        Types [table] table: 0x993cd270b3db5040
+            1 [table]:
+            TargetTypes [table] table: 0x998be445047dab70
+                1 [string] = Strongest
+                2 [string] = Weakest
+                3 [string] = Front
+                4 [string] = Back
+            2 [table]:
+            Errors [table] table: 0x9a073e5a761fe660
+                1 [number] = 0
+                2 [number] = 4
+                3 [number] = 2
+                4 [number] = 3
+                5 [number] = 1
+        11 [function] = init
+        12 [table]:
+        HotbarModelController [table] table: 0x2c9b9330eff304a0
+            1 [function] = _loadModel
+            2 [boolean] = true
+            3 [function] = KnitInit
+            4 [function] = getFinalTierRadius
+            5 [table]:
+            ModelLoaded [table] table: 0xc661e91988808a40
+                1 [boolean] = false
+            6 [function] = getAssets
+            7 [function] = getModel
+            8 [function] = KnitStart
+            9 [string] = HotbarModelController
+        13 [boolean] = false
+        14 [boolean] = false
+        15 [table]:
+        TowerPlacementController [table] table: 0x0eb60d659007c560
+            1 [function] = canSell
+            2 [table] (Recursive table detected)
+            3 [function] = setMap
+            4 [function] = getLocalTowerCounts
+            5 [table]:
+            TowerLimitUpdated [table] table: 0xf80f8b2f8b7cb630
+                1 [boolean] = false
+            6 [function] = isLimitReachedFor
+            7 [function] = upgrade
+            8 [function] = togglePlacing
+            9 [function] = getPlacing
+            10 [function] = init
+            11 [table]:
+            Upgraded [table] table: 0x2882f744ed14db00
+                1 [boolean] = false
+            12 [function] = deploy
+            13 [function] = placeTower
+            14 [function] = cancelPlacing
+            15 [table]:
+            PlacingUpdated [table] table: 0x6b1639706e857c10
+                1 [boolean] = false
+            16 [function] = sell
+            17 [function] = isPlacing
+            18 [function] = getTowerLimit
+        16 [function] = playerStart
+        17 [table]:
+        WeaponType [table] table: 0x86ba51d6a19758b0
+            1 [function] = Damager
+            2 [function] = Freezer
+        18 [boolean] = false
+
+Function Constants: setStoreData
+    1 [string] = tick
+    3 [string] = updatedAt
+    4 [string] = pairs
+    6 [string] = listingParts
+    7 [string] = listingModels
+    8 [string] = Listing
+    9 [string] = Id
+    10 [string] = ItemData
+    11 [string] = ItemId
+    12 [string] = PurchaseMethod
+    13 [string] = PurchaseData
+    14 [string] = Amount
+    15 [string] = Default
+    16 [string] = Robux
+    17 [string] = Coins
+    18 [string] = Gems
+    20 [string] = Color3
+    21 [string] = new
+    23 [number] = 0.607843
+    24 [number] = 0.603921
+    25 [string] = fromRGB
+    27 [string] = model
+    28 [string] = Pad
+    29 [string] = FindFirstChild
+    30 [string] = Color
+    31 [string] = GetDescendants
+    32 [string] = TextLabel
+    33 [string] = IsA
+    34 [string] = TextColor3
+    35 [string] = LineHeight
+    36 [string] = Name
+    37 [string] = getName
+    38 [string] = 
+    39 [string] = Text
+    40 [string] = Price
+    41 [string] = FormatUtils
+    42 [string] = formatNumber
+    43 [string] = UIGradient
+    44 [string] = ColorSequence
+    46 [string] = Color3Utils
+    47 [number] = -0.05
+    48 [string] = addToChannels
+    49 [string] = BillboardGui
+    50 [string] = AlwaysOnTop
+    51 [string] = Frame
+    52 [string] = BasePart
+    53 [string] = Decal
+    54 [string] = getThumbnail
+    55 [string] = Texture
+    56 [string] = UnrankedTowerId
+    57 [string] = _getAttribute
+    58 [string] = BaseTowerDataGetter
+    59 [string] =  Aux
+    60 [string] = isTower
+    61 [string] = getModel
+    63 [string] = andThen
+    64 [string] = Destroy
+
+====================================================================================================
+
+Function Dump: setOwner
+
+Function Upvalues: setOwner
+    1 [Instance] = Players
+
+Function Constants: setOwner
+    1 [string] = ownerId
+    2 [string] = ownerNameLabel
+    3 [string] = pairs
+    5 [string] = GetPlayers
+    6 [string] = UserId
+    7 [string] = Name
+    8 [string] = upper
+    9 [string] = Text
+    10 [string] = UNOWNED
+    11 [string] = proximityPrompt
+    12 [string] = Open Store
+    13 [string] = Claim
+    14 [string] = ActionText
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+    1 [table] (Recursive table detected)
+
+Function Constants: Unknown Name
+    1 [string] = pairs
+    3 [string] = GetDescendants
+    4 [string] = ParticleEmitter
+    5 [string] = IsA
+    6 [string] = Beam
+    7 [string] = Motor6D
+    8 [string] = PointLight
+    9 [string] = SpotLight
+    10 [string] = Destroy
+    11 [string] = BasePart
+    12 [string] = Anchored
+    13 [string] = PrimaryPart
+    14 [string] = GetExtentsSize
+    15 [string] = Y
+    16 [number] = 2
+    17 [string] = ModelUtils
+    18 [string] = scaleModel
+
+====================================================================================================
+
+Function Dump: getModel
+
+Function Upvalues: getModel
+    1 [table]:
+    1 [table] table: 0x9862a0dc3697a930
+        1 [table]:
+        Fallen Hero [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xfa91d42e4dde0270
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xed460efc872b7d60
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        2 [table]:
+        Inferno Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x92b3f83d3a1cec90
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x0377a60d2706b790
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        3 [table]:
+        Piggy Bank [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x29f65909f2e864a0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x29eae3761eb68b40
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        4 [table]:
+        Hazard [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x9dfd6e3d91b59d00
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x2cfe43015b32ba50
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        5 [table]:
+        Shadow God [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xfd22077d6430d310
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xa702ea9385738240
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        6 [table]:
+        NightClaw [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xf2801c10d8ae8fc0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xf5049f7ea44fbdb0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        7 [table]:
+        Zombie Panda [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x389bd4abf986f7f0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xca854d49870d72f0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        8 [table]:
+        Razor Hare [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x10e694fe2b547ea0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xe222f94698da7340
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        9 [table]:
+        Cobra King Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x9b8219e1bb8dce30
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xdf48ebdb455fe7c0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        10 [table]:
+        RageClaw [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x323974685f78e060
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x93ab74a9c27183f0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        11 [table]:
+        ToxiBear Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xd91f970a84c8a540
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x04930d1ee4adbff0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        12 [table]:
+        Satellite Laser Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x5f28640829335e00
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x310368a8b30b0540
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        13 [table]:
+        AbyssalLeviathan [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xe337d078285c3b30
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x6a843a06f34fb7d0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        14 [table]:
+        TridraChampion [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xd77a6f5ade7e1f50
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x10d1d7532778a5f0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        15 [table]:
+        Cyber Dragon [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x71ba7406db0fb670
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x37f850cdf84ee5e0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        16 [table]:
+        Dark Knight [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xc52bb38999e64580
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xd8b1d936fc129800
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        17 [table]:
+        Mr Frost Tower [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xcc63982733a430e0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x1c966a6b3c802a30
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        18 [table]:
+        Bunny Brainwave [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xaee85f8717289530
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x93c00443ba5af5f0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        19 [table]:
+        Buster Bunny [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x501ee2a4bd2a43e0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x8f568905caca5b50
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        20 [table]:
+        Hercules [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xef977a9ace5e68c0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x3e6689f5e6d771e0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        21 [table]:
+        EarthSerpent [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x10586448e55e3300
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x09bfd980eb210070
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        22 [table]:
+        FrostFang Rex [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xf9b8b01e08d2e950
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xdc532ee43930b8d0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        23 [table]:
+        Golden Hydro [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x52fc96bbcba8a800
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x855ac675772c7540
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        24 [table]:
+        Snuggles Tower [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xbb8a9614a2d198f0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x168fedd79ef93170
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        25 [table]:
+        Caveman [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xdee097339d4802d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x52d3444493559370
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        26 [table]:
+        Tiki Hydro [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xc8f8b8766fc66e80
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xedcc0b626a2eedd0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        27 [table]:
+        Cosmic Rex [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xc424d6d41b6b5e50
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xda43116f9193edb0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        28 [table]:
+        SkybornPiercer1 [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x495dc931e70c1540
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xc49aeb30f9656200
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        29 [table]:
+        Snow Owl [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xf48b720acf751de0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x154b3a3ba327b380
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        30 [table]:
+        Reindeer Dragon [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xb6292214e05cdba0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x41dfd27e4c091d80
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        31 [table]:
+        Rambo Rudolph [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x14b38fa221936fe0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xdccdf2caae307100
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        32 [table]:
+        Neptune [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xfc4b2fefce0d87b0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xf55f44a2885a2810
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        33 [table]:
+        Orochi [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x54c4ca513a412040
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x1f4bcd4b314ff6b0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        34 [table]:
+        TheMastermind Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x36236fab554d02d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x10a770db86786160
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        35 [table]:
+        Ginger Bread King Tower [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xde8a9a07f4ddea80
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xeabfc9a4eec6ca90
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        36 [table]:
+        Vampire Sniper [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xe8f243c321df5dd0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x5a4bfcc9600b86e0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        37 [table]:
+        Frankenstein [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x0e06042d7e12fd70
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x70ee74710e95f800
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        38 [table]:
+        Baby Dragon [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x7d71d1815833ecc0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x8c6335214b848e40
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        39 [table]:
+        Death Train Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xc295dfee51b33290
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x60a8918e195a5010
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        40 [table]:
+        Tidewing Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xe29fd8e5cb891370
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xc7e1bd10bc0503f0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        41 [table]:
+        Chained Dragon [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x072d2e71e8f303d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xd6d8bfdaa93bca60
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        42 [table]:
+        Arctic Force Santa [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x6d0e7c9061d81090
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x4a0d3f887addbc90
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        43 [table]:
+        Santa's Toy [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x8edf820dce0f78d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x95cd6d093faf6750
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        44 [table]:
+        StormSerpent Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x1854388dabafda00
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xe1dafa8aa255d360
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        45 [table]:
+        MutantIndominus [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xe08c70413849cd50
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xa5e1f0f187086200
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        46 [table]:
+        Death Singer [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x88dd1ea844ad1e10
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x23204d2118139080
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        47 [table]:
+        Super Soldier [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x065ba88da0949d50
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xd5f8b4df8c6e1b30
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        48 [table]:
+        VoidSerpent [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x96031701002a7de0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x96ce6b6681044120
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        49 [table]:
+        Frozen Knight [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x9a354c97edfba750
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xacd6fe57c39ae4b0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        50 [table]:
+        NightProwler [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x03739b884c3eb8d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xb997c17c89c723b0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        51 [table]:
+        AquaBot [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x701ae6aa703dc720
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xf3bbc40e542c2280
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        52 [table]:
+        AbyssalAngler [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x0328c63db0e20820
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x8c71447229790ed0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        53 [table]:
+        Village Hunter [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xc22695a5af269b30
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xdeef8c45d902cc80
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        54 [table]:
+        AbyssalKraken [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x57fc9549c57cdc10
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xceee55ab57501c90
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        55 [table]:
+        The Evil Genius Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xbcf9c643ddc6a750
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x0ee59d5a3c04b130
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        56 [table]:
+        Zombie Girl [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x84a84b8193458c20
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x2eea30cd6ff6ee70
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        57 [table]:
+        Storm Dragon [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x643e421e7e09b940
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x5a40393cca859640
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        58 [table]:
+        WaterSerpent Aux [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x3943234da5faa0e0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x9b46548dadd70790
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        59 [table]:
+        IcePawn [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xd091a7e2a78612e0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x1fea9d6ea173b110
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        60 [table]:
+        SunPaws [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x790e61553992f0e0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xa05599150a779340
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        61 [table]:
+        VenomFang Rex [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xe32294e86ec4f030
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xa0b7780dfb9fd240
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        62 [table]:
+        ThornClaw [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xdd4b7ec8bf92d650
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x0c4d913061da8d60
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        63 [table]:
+        Tankenstein [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x7c2836ec02564090
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xe552664c0ebc9900
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        64 [table]:
+        Wrath Skyborn [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x5b97280b261beb60
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xeacccce99ad059e0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        65 [table]:
+        CyberSkull [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0xcc15ea8cf0dac0e0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xe35ca14586531c70
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        66 [table]:
+        Mystic Mirage [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x5bc5bc172d17ec80
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x4b2aeeab5af85600
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        67 [table]:
+        Snow Patrol [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x8ad1ff6a2bfa69d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x561cc322982d63e0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        68 [table]:
+        Sandstorm Rex [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x0c066af261084c90
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x9e6778eaf1687b10
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        69 [table]:
+        Phoenix [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x7426b356cb0b77d0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x2f8ffa5eaa5e51c0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        70 [table]:
+        TheSiren [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x2db23898f43f7cb0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0xb8ac07cc527bcff0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+        71 [table]:
+        GemBlaster [table] Promise(Resolved)
+            1 [table]:
+            _values [table] table: 0x1e45053ff54ea8a0
+                1 [Instance] = Model
+            2 [boolean] = false
+            3 [thread] = thread: 0x28f2319223bf05f0
+            4 [function] = Unknown Name
+            5 [string] = Resolved
+            6 [number] = 1
+            7 [string] = ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:78 function getModel
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBooth:180 function setStoreData
+ReplicatedStorage.ClientModules.PlayerStores.PlayerBoothController:85
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:56 function acquireRunnerThreadAndCallEventHandler
+ReplicatedStorage.Packages._Index.sleitnick_signal@1.5.0.signal:67 function runEventHandlerInFreeThread
+
+    2 [table] (Recursive table detected)
+    3 [table] (Recursive table detected)
+
+Function Constants: getModel
+    1 [string] = getModel
+    3 [string] = andThen
+
+====================================================================================================
+
+Function Dump: new
+
+Function Upvalues: new
+    1 [table]:
+    1 [table] table: 0x956099e91a977640
+        1 [function] = Is
+        2 [function] = Wrap
+        3 [function] = new
+    2 [table]:
+    2 [table] table: 0x9877d3c8e475e200
+        1 [function] = purchaseParticles
+        2 [function] = getOwner
+        3 [function] = setOwner
+        4 [function] = setStoreData
+        5 [table] (Recursive table detected)
+        6 [function] = new
+    3 [table]:
+    3 [table] table: 0x8ada27cf8f4de590
+        1 [function] = _getComponentDelay
+        2 [function] = getAttribute
+        3 [function] = burstAt
+        4 [function] = enable
+        5 [function] = setParticlesEnabled
+        6 [function] = destroy
+        7 [function] = disable
+        8 [function] = burst
+        9 [function] = setVolume
+        10 [table] (Recursive table detected)
+        11 [function] = new
+
+Function Constants: new
+    1 [string] = Listing
+    2 [string] = FindFirstChild
+    3 [number] = 1
+    4 [string] = table
+    5 [string] = insert
+    7 [string] = model
+    8 [string] = listingParts
+    9 [string] = listingModels
+    10 [string] = ownerNameLabel
+    11 [string] = PromptTriggered
+    12 [string] = ListingClicked
+    14 [string] = OwnerName
+    15 [string] = new
+    16 [string] = setmetatable
+    18 [string] = Instance
+    20 [string] = ProximityPrompt
+    21 [string] = RequiresLineOfSight
+    22 [string] = proximityPrompt
+    23 [string] = Triggered
+    24 [string] = Connect
+    25 [string] = onPurchase
+    26 [string] = pairs
+    28 [string] = GetDescendants
+    29 [string] = Name
+    30 [string] = OnPurchase
+    31 [string] = Coins
+    32 [string] = CurrencyId
+    33 [string] = GetAttribute
+    34 [string] = setOwner
+
+====================================================================================================
+
+Function Dump: getOwner
+
+Function Upvalues: getOwner
+
+Function Constants: getOwner
+    1 [string] = ownerId
+
+====================================================================================================
+
+Function Dump: purchaseParticles
+
+Function Upvalues: purchaseParticles
+
+Function Constants: purchaseParticles
+    1 [string] = onPurchase
+    2 [string] = burst
+
+====================================================================================================
+
+Function Dump: Unknown Name
+
+Function Upvalues: Unknown Name
+
+Function Constants: Unknown Name
+    1 [string] = print
+    3 [string] = Reject
+
+====================================================================================================
+]]
