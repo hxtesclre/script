@@ -21,7 +21,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 75001, Gems = 65001},
             }
     },
-    ["CosmicRex"] = {
+    ["Cosmic Rex"] = {
             basePrice = {Coins = 60002, Gems = 45002},
             suffixes = {
                 ["BattleReady1"] = {Coins = 60002, Gems = 45002},
@@ -44,7 +44,7 @@ local towerConfigurations = {
             }
     },
 
-    ["ZombiePanda"] = {
+    ["Zombie Panda"] = {
             basePrice = {Coins = 65003, Gems = 55003},
             suffixes = {
                 ["BattleReady1"] = {Coins = 65003, Gems = 55003},
@@ -67,7 +67,7 @@ local towerConfigurations = {
             }
         },
 
-    ["TridraChampion"] = {
+    ["Tridra Champion"] = {
             basePrice = {Coins = 50004, Gems = 40004},
             suffixes = {
                 ["BattleReady1"] = {Coins = 50004, Gems = 40004},
@@ -113,7 +113,7 @@ local towerConfigurations = {
             }
         },
 
-    ["ChainedDragon"] = {
+    ["Chained Dragon"] = {
             basePrice = {Coins = 60006, Gems = 40006},
             suffixes = {
                 ["BattleReady1"] = {Coins = 60006, Gems = 40006},
@@ -135,7 +135,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 75006, Gems = 55006},
             }
         },
-    ["MutantIndominus"] = {
+    ["Mutant Indominus"] = {
             basePrice = {Coins = 60007, Gems = 50007},
             suffixes = {
                 ["BattleReady1"] = {Coins = 60007, Gems = 50007},
@@ -181,7 +181,7 @@ local towerConfigurations = {
             }
         },
 
-    ["MrFrost"] = {
+    ["Mr Frost"] = {
             basePrice = {Coins = 5009, Gems = 2509},
             suffixes = {
                 ["BattleReady1"] = {Coins = 5009, Gems = 2509},
@@ -204,7 +204,7 @@ local towerConfigurations = {
             }
         },
 
-    ["DiablosHydra"] = {
+    ["Diablos Hydra"] = {
             basePrice = {Coins = 25010, Gems = 17510},
             suffixes = {
                 ["BattleReady1"] = {Coins = 25010, Gems = 17510},
@@ -227,7 +227,7 @@ local towerConfigurations = {
             }
         },
 
-    ["GoldenHydra"] = {
+    ["Golden Hydra"] = {
             basePrice = {Coins = 40011, Gems = 25511},
             suffixes = {
                 ["BattleReady1"] = {Coins = 40011, Gems = 25511},
@@ -249,7 +249,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 50011, Gems = 30511},
             }
         },
-    ["MegaHydra"] = {
+    ["Mega Hydra"] = {
             basePrice = {Coins = 40012, Gems = 25512},
             suffixes = {
                 ["BattleReady1"] = {Coins = 40012, Gems = 25512},
@@ -295,7 +295,7 @@ local towerConfigurations = {
             }
         },
 
-    ["GalacticEmperator"] = {
+    ["Galactic Emperator"] = {
             basePrice = {Coins = 25514, Gems = 15014},
             suffixes = {
                 ["BattleReady1"] = {Coins = 25514, Gems = 15014},
@@ -318,7 +318,7 @@ local towerConfigurations = {
             }
         },
 
-    ["TheKraken"] = {
+    ["The Kraken"] = {
             basePrice = {Coins = 35515, Gems = 15015},
             suffixes = {
                 ["BattleReady1"] = {Coins = 35515, Gems = 15015},
@@ -340,7 +340,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 40515, Gems = 25015},
             }
         },
-    ["StormSerpent"] = {
+    ["Storm Serpent"] = {
             basePrice = {Coins = 35516, Gems = 20016},
             suffixes = {
                 ["BattleReady1"] = {Coins = 35516, Gems = 20016},
@@ -363,7 +363,7 @@ local towerConfigurations = {
             }
         },
 
-    ["BusterBunny"] = {
+    ["Buster Bunny"] = {
             basePrice = {Coins = 12517, Gems = 8017},
             suffixes = {
                 ["BattleReady1"] = {Coins = 12517, Gems = 8017},
@@ -386,7 +386,7 @@ local towerConfigurations = {
             }
         },
 
-    ["ApexSerpent"] = {
+    ["Apex Serpent"] = {
             basePrice = {Coins = 12518, Gems = 8018},
             suffixes = {
                 ["BattleReady1"] = {Coins = 12518, Gems = 8018},
@@ -409,7 +409,7 @@ local towerConfigurations = {
             }
         },
 
-    ["DiablosDragon"] = {
+    ["Diablos Dragon"] = {
             basePrice = {Coins = 7519, Gems = 3019},
             suffixes = {
                 ["BattleReady1"] = {Coins = 7519, Gems = 3019},
@@ -432,7 +432,7 @@ local towerConfigurations = {
             }
         },
 
-    ["BabyDragon"] = {
+    ["Baby Dragon"] = {
             basePrice = {Coins = 2020, Gems = 1020},
             suffixes = {
                 ["BattleReady1"] = {Coins = 2020, Gems = 1020},
@@ -454,7 +454,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 2020, Gems = 1020},
             }
         },
-    ["VoidSerpent"] = {
+    ["Void Serpent"] = {
             basePrice = {Coins = 9021, Gems = 5021},
             suffixes = {
                 ["BattleReady1"] = {Coins = 9021, Gems = 5021},
@@ -477,7 +477,7 @@ local towerConfigurations = {
             }
         },
 
-    ["AbyssalLeviathan"] = {
+    ["Abyssal Leviathan"] = {
             basePrice = {Coins = 7022, Gems = 3022},
             suffixes = {
                 ["BattleReady1"] = {Coins = 7022, Gems = 3022},
@@ -500,7 +500,7 @@ local towerConfigurations = {
             }
         },
 
-    ["AbyssalKraken"] = {
+    ["Abyssal Kraken"] = {
             basePrice = {Coins = 13023, Gems = 7023},
             suffixes = {
                 ["BattleReady1"] = {Coins = 13023, Gems = 7023},
@@ -546,7 +546,7 @@ local towerConfigurations = {
             }
         },
 
-    ["GalaxiaDragon"] = {
+    ["Galaxia Dragon"] = {
             basePrice = {Coins = 45025, Gems = 30025},
             suffixes = {
                 ["BattleReady1"] = {Coins = 45025, Gems = 30025},
@@ -591,7 +591,7 @@ local towerConfigurations = {
             }
         },
 
-    ["CoralHydra"] = {
+    ["Coral Hydra"] = {
             basePrice = {Coins = 15027, Gems = 10027},
             suffixes = {
                 ["BattleReady1"] = {Coins = 15027, Gems = 10027},
@@ -614,7 +614,7 @@ local towerConfigurations = {
             }
         },
 
-    ["AirSerpent"] = {
+    ["Air Serpent"] = {
             basePrice = {Coins = 35028, Gems = 20028},
             suffixes = {
                 ["BattleReady1"] = {Coins = 35028, Gems = 20028},
@@ -637,7 +637,7 @@ local towerConfigurations = {
             }
         },
 
-    ["NightDragon"] = {
+    ["Night Dragon"] = {
             basePrice = {Coins = 27529, Gems = 17529},
             suffixes = {
                 ["BattleReady1"] = {Coins = 27529, Gems = 17529},
@@ -660,7 +660,7 @@ local towerConfigurations = {
             }
         },
 
-    ["TideWing"] = {
+    ["Tide Wing"] = {
             basePrice = {Coins = 17530, Gems = 10030},
             suffixes = {
                 ["BattleReady1"] = {Coins = 17530, Gems = 10030},
@@ -682,7 +682,7 @@ local towerConfigurations = {
                 ["EternalGlory"] = {Coins = 17530, Gems = 10030},
             }
         },
-    ["TerraTitan"] = {
+    ["Terra Titan"] = {
             basePrice = {Coins = 17531, Gems = 10031},
             suffixes = {
                 ["BattleReady1"] = {Coins = 17531, Gems = 10031},
