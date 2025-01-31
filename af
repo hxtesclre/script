@@ -1,0 +1,323 @@
+-- Получаем модуль PlayerBoothController
+local playerBoothControllerModule = require(game:GetService("ReplicatedStorage").ClientModules.PlayerStores.PlayerBoothController)
+local HttpService = game:GetService("HttpService") -- Для работы с JSON (если требуется)
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local Webhook_URL = "https://discord.com/api/webhooks/1325412724993298512/_b_Q7HeUHB4XEUgQtfaqppg_25c7Z0sTSaGC2S5GXVEvV1CxL6_sBqFY9Kk0FqLxPpR2"
+
+local towerConfigurations = {
+    ["AirSerpent"] = {
+            basePrice = {Coins = 70000, Gems = 70000},
+            suffixes = {
+                ["BattleReady1"] = {Coins = 70000, Gems = 70000},
+                ["BattleReady2"] = {Coins = 70000, Gems = 70000},
+                ["BattleReady3"] = {Coins = 70000, Gems = 70000},
+                ["FarReach1"] = {Coins = 70000, Gems = 70000},
+                ["FarReach2"] = {Coins = 70000, Gems = 70000},
+                ["FarReach3"] = {Coins = 70000, Gems = 70000},
+                ["SwiftStrike1"] = {Coins = 70000, Gems = 70000},
+                ["SwiftStrike2"] = {Coins = 70000, Gems = 70000},
+                ["SwiftStrike3"] = {Coins = 70000, Gems = 70000},
+                ["EagleEye"] = {Coins = 70000, Gems = 70000},
+                ["LightningSpeed"] = {Coins = 70000, Gems = 70000},
+                ["FortuneFrenzy"] = {Coins = 70000, Gems = 70000},
+                ["Finisher"] = {Coins = 70000, Gems = 70000},
+                ["TurboTotem"] = {Coins = 70000, Gems = 70000},
+                ["Warlord"] = {Coins = 70000, Gems = 70000},
+                ["BattleMaster"] = {Coins = 70000, Gems = 70000},
+                ["ForceOfNature"] = {Coins = 70000, Gems = 70000},
+                ["BossHunter"] = {Coins = 70000, Gems = 70000},
+                ["GoldenMight"] = {Coins = 70000, Gems = 70000},
+                ["AlmightyEye"] = {Coins = 70000, Gems = 70000},
+                ["Overclocked"] = {Coins = 70000, Gems = 70000},
+                ["FortuneBreaker"] = {Coins = 70000, Gems = 70000},
+            }
+        },
+    ["CosmicRex"] = {
+            basePrice = {Coins = 40000, Gems = 40000},
+            suffixes = {
+                ["BattleReady1"] = {Coins = 40000, Gems = 40000},
+                ["BattleReady2"] = {Coins = 40000, Gems = 40000},
+                ["BattleReady3"] = {Coins = 40000, Gems = 40000},
+                ["FarReach1"] = {Coins = 40000, Gems = 40000},
+                ["FarReach2"] = {Coins = 40000, Gems = 40000},
+                ["FarReach3"] = {Coins = 40000, Gems = 40000},
+                ["SwiftStrike1"] = {Coins = 40000, Gems = 40000},
+                ["SwiftStrike2"] = {Coins = 40000, Gems = 40000},
+                ["SwiftStrike3"] = {Coins = 40000, Gems = 40000},
+                ["EagleEye"] = {Coins = 40000, Gems = 40000},
+                ["LightningSpeed"] = {Coins = 40000, Gems = 40000},
+                ["FortuneFrenzy"] = {Coins = 40000, Gems = 40000},
+                ["Finisher"] = {Coins = 40000, Gems = 40000},
+                ["TurboTotem"] = {Coins = 40000, Gems = 40000},
+                ["Warlord"] = {Coins = 40000, Gems = 40000},
+                ["BattleMaster"] = {Coins = 40000, Gems = 40000},
+                ["ForceOfNature"] = {Coins = 40000, Gems = 40000},
+                ["BossHunter"] = {Coins = 40000, Gems = 40000},
+                ["GoldenMight"] = {Coins = 40000, Gems = 40000},
+                ["AlmightyEye"] = {Coins = 40000, Gems = 40000},
+                ["Overclocked"] = {Coins = 40000, Gems = 40000},
+                ["FortuneBreaker"] = {Coins = 40000, Gems = 40000},
+                ["EthernalGlory"] = {Coins = 50000, Gems = 50000},
+            }
+        },
+}
+
+-- Создаем ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "StopButtonGui"
+screenGui.Parent = playerGui
+
+-- Создаем кнопку
+local stopButton = Instance.new("TextButton")
+stopButton.Size = UDim2.new(0, 200, 0, 50)
+stopButton.Position = UDim2.new(0.5, -100, 0.8, 0) -- Центр экрана, ниже середины
+stopButton.Text = "Остановить"
+stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Красный фон
+stopButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Белый текст
+stopButton.Font = Enum.Font.SourceSansBold
+stopButton.TextScaled = true
+stopButton.Parent = screenGui -- Кнопка добавляется в ScreenGui
+
+local function sendStatistics(playerName, itemName, itemPrice, itemCurrency, maxPrice)
+    local data = {
+        content = "", -- Основное сообщение (если нужно)
+        embeds = {{
+            title = playerName,
+            description = "",
+            type = "rich",
+            color = 0xffffff, -- Цвет в десятичной системе (белый)
+            fields = {
+                {
+                    name = "Башня",
+                    value = itemName,
+                    inline = true
+                },
+                {
+                    name = "Цена",
+                    value = itemPrice .. " " .. itemCurrency,
+                    inline = true
+                },
+                {
+                    name = "Максимальная цена",
+                    value = maxPrice .. " " .. itemCurrency,
+                    inline = true
+                }
+            }
+        }}
+    }
+
+    -- Кодирование данных в JSON (если нужно)
+    local jsonData = HttpService:JSONEncode(data)
+
+    -- Отправка POST-запроса
+    local response = request({
+        Url = Webhook_URL, -- URL вебхука
+        Method = "POST", -- Метод запроса
+        Headers = {
+            ["Content-Type"] = "application/json" -- Указываем тип содержимого
+        },
+        Body = jsonData -- Тело запроса
+    })
+
+    -- Проверка ответа
+    if response.Success then
+    else
+        warn("Ошибка отправки сообщения:", response.StatusCode, response.StatusMessage)
+    end
+end
+
+-- Флаги для управления автопокупкой
+local stopAutoPurchase = false
+local isAutoPurchaseRunning = false
+
+-- Реакция на клик
+stopButton.MouseButton1Click:Connect(function()
+    print("Кнопка нажата!")
+    stopAutoPurchase = true -- Устанавливаем флаг для остановки
+    stopButton:Destroy() -- Удаляем кнопку
+end)
+
+-- Функция для создания полной таблицы имен башен и их максимальных цен
+local function createTowerNamesAndPrices(towerConfigs)
+    local namesAndPrices = {}
+    if towerConfigs then
+        local sortedKeys = {}
+        for key in pairs(towerConfigs) do
+            table.insert(sortedKeys, key)
+        end
+        table.sort(sortedKeys)
+
+        for _, baseName in ipairs(sortedKeys) do
+            local config = towerConfigs[baseName]
+            for currency, basePrice in pairs(config.basePrice) do
+                local baseKey = baseName .. "_" .. currency
+                namesAndPrices[baseKey] = basePrice
+            end
+            for suffix, suffixPrices in pairs(config.suffixes) do
+                for currency, price in pairs(suffixPrices) do
+                    local fullName = baseName .. suffix .. "_" .. currency
+                    namesAndPrices[fullName] = price
+                end
+            end
+        end
+    end
+    return namesAndPrices
+end
+
+-- Создаем таблицу имен башен и их цен
+local towerNamesAndPrices = createTowerNamesAndPrices(towerConfigurations)
+
+-- Подсчитываем количество элементов
+local function tableLength(tbl)
+    local count = 0
+    for _ in pairs(tbl) do count = count + 1 end
+    return count
+end
+
+print("Всего башен загружено:", tableLength(towerNamesAndPrices))
+
+-- Функция для поиска всех значений по имени поля
+local function findFields(tbl, fieldName)
+    local results = {}
+    for key, value in pairs(tbl) do
+        if type(value) == "table" then
+            local nestedResults = findFields(value, fieldName)
+            for _, nestedValue in ipairs(nestedResults) do
+                table.insert(results, nestedValue)
+            end
+        elseif key == fieldName then
+            table.insert(results, value)
+        end
+    end
+    return results
+end
+
+-- Функция для проверки и автопокупки товаров
+local function attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, itemId, itemPrice, itemName, maxPrice, sendStatisticsFlag)
+    local purchaseSuccess, purchaseResult
+
+    -- Проверка, какая валюта используется, и если флаг покупки выключен
+    if itemCurrency == "Gems" then
+        if buyForGems then
+            -- Покупка за Gems
+            purchaseSuccess, purchaseResult = pcall(playerBoothControllerModule.purchaseFromBooth, playerBoothControllerModule, boothId, itemId)
+            if purchaseSuccess then
+                print("Покупка", itemName, "по цене", itemPrice, itemCurrency, "прошла успешно.", "MAX:", maxPrice)
+                wait(1)
+                if sendStatisticsFlag then
+                    sendStatistics("phxfing1", itemName, itemPrice, itemCurrency, maxPrice)
+                end
+            else
+                print("Ошибка при покупке товара:", purchaseResult, itemName)
+            end
+        else
+            print("Покупка за Gems отключена.")
+        end
+    elseif itemCurrency == "Coins" then
+        if buyForCoins then
+            -- Покупка за Coins
+            purchaseSuccess, purchaseResult = pcall(playerBoothControllerModule.purchaseFromBooth, playerBoothControllerModule, boothId, itemId)
+            if purchaseSuccess then
+                print("Покупка", itemName, "по цене", itemPrice, itemCurrency, "прошла успешно.", "MAX:", maxPrice)
+                wait(1)
+                if sendStatisticsFlag then
+                    sendStatistics("phxfing1", itemName, itemPrice, itemCurrency, maxPrice)
+                end
+            else
+                print("Ошибка при покупке товара:", purchaseResult, itemName)
+            end
+        else
+            print("Покупка за Coins отключена.")
+        end
+    end
+end
+
+-- Основная функция проверки и покупки товаров
+local function checkAndPurchaseItems()
+    -- Пример флагов (вы можете установить их динамически где-то еще)
+    local buyForGems = true  -- Включить покупку за Gems
+    local buyForCoins = true  -- Отключить покупку за Coins
+    print("========================================================================================================")
+    for boothIdNum = 1, 21 do
+        for listingIdx = 1, 4 do
+            if stopAutoPurchase then
+                print("Автопокупка остановлена.")
+                isAutoPurchaseRunning = false
+                return
+            end
+            local boothId = "Booth" .. boothIdNum  -- Формируем идентификатор киоска
+            local listingIndex = listingIdx  -- Индекс товара
+
+            -- Вызов функции getListingId с использованием pcall
+            local success, itemId = pcall(playerBoothControllerModule.getListingId, playerBoothControllerModule, boothId, listingIndex)
+            if success and itemId then
+                -- Вызов функции getListing для получения данных о товаре
+                local listingSuccess, listingResult = pcall(playerBoothControllerModule.getListing, playerBoothControllerModule, boothId, listingIndex)
+                if listingSuccess and listingResult then
+                    -- Проверяем цену и имя объекта
+                    local itemPrices = findFields(listingResult, "Amount")
+                    local itemNames = findFields(listingResult, "ItemId")
+
+                    -- Проверяем, если есть хотя бы одно имя и цена
+                    if #itemPrices > 0 and #itemNames > 1 then
+                        local itemPrice = itemPrices[1]  -- Берем первую найденную цену
+                        local itemName = itemNames[2]     -- Берем второе найденное имя
+                        local itemCurrency = itemNames[1] -- Валюта продажи
+                        local key = string.gsub(itemName, "%s+", "") .. "_" .. string.gsub(itemCurrency, "%s+", "")
+                        local maxPrice = towerNamesAndPrices[key]
+
+                        -- Проверяем цену и имя объекта
+                        if maxPrice and itemPrice <= maxPrice then
+                            -- Вызов функции покупки
+                            attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, itemId, itemPrice, itemName, maxPrice, true)
+                        else
+                            if maxPrice then
+                                print("Киоск:", boothId, "Башня:", itemName, "Цена:", itemPrice, itemCurrency, "MAX:", maxPrice)
+                            else
+                                print("Не найдена максимальная цена для ключа:", key)
+                            end
+                        end
+                    else
+                        print("Не удалось найти имя или цену товара.")
+                    end
+                else
+                    print("Ошибка при получении данных о товаре для киоска:", boothId, "и товара:", listingIndex)
+                end
+            end
+        end
+    end
+    print("========================================================================================================")
+end
+
+
+-- Функция запуска автопокупки
+local function startAutoPurchase()
+    wait(10)
+    local counter = 0
+    if isAutoPurchaseRunning then
+        print("Автопокупка уже запущена!")
+        return
+    end
+
+    print("Запуск автопокупки...")
+    stopAutoPurchase = false
+    isAutoPurchaseRunning = true
+    
+    -- Зацикливаем проверку каждые 5 секунд
+    while isAutoPurchaseRunning do
+        if stopAutoPurchase then
+            print("Автопокупка остановлена.")
+            isAutoPurchaseRunning = false
+            return
+        end
+        checkAndPurchaseItems()
+        counter = counter + 1
+        if counter == 3 then 
+            game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ServerChangeService"):WaitForChild("RF"):WaitForChild("joinRandomServer"):InvokeServer()
+        end
+        wait(10)
+    end
+end
+
+startAutoPurchase()
