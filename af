@@ -31,7 +31,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 65000, Gems = 65000},
                 ["Overclocked"] = {Coins = 50000, Gems = 50000},
                 ["FortuneBreaker"] = {Coins = 50000, Gems = 50000},
-                ["Assasin"] = {Coins = 50000, Gems = 50000},
+                ["Assassin"] = {Coins = 50000, Gems = 50000},
                 ["EthernalGlory"] = {Coins = 50000, Gems = 50000},
                 ["WarMachine"] = {Coins = 50000, Gems = 50000},
             }
@@ -61,7 +61,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 50000, Gems = 50000},
                 ["Overclocked"] = {Coins = 50000, Gems = 50000},
                 ["FortuneBreaker"] = {Coins = 50000, Gems = 50000},
-                ["Assasin"] = {Coins = 50000, Gems = 50000},
+                ["Assassin"] = {Coins = 50000, Gems = 50000},
                 ["EthernalGlory"] = {Coins = 60000, Gems = 60000},
                 ["WarMachine"] = {Coins = 50000, Gems = 50000},
             }
@@ -91,7 +91,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 60000, Gems = 60000},
                 ["Overclocked"] = {Coins = 60000, Gems = 60000},
                 ["FortuneBreaker"] = {Coins = 60000, Gems = 60000},
-                ["Assasin"] = {Coins = 60000, Gems = 60000},
+                ["Assassin"] = {Coins = 60000, Gems = 60000},
                 ["EthernalGlory"] = {Coins = 75000, Gems = 75000},
                 ["WarMachine"] = {Coins = 60000, Gems = 60000},
             }
@@ -121,7 +121,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 60000, Gems = 60000},
                 ["Overclocked"] = {Coins = 60000, Gems = 60000},
                 ["FortuneBreaker"] = {Coins = 60000, Gems = 60000},
-                ["Assasin"] = {Coins = 60000, Gems = 60000},
+                ["Assassin"] = {Coins = 60000, Gems = 60000},
                 ["EthernalGlory"] = {Coins = 75000, Gems = 75000},
                 ["WarMachine"] = {Coins = 60000, Gems = 60000},
             }
@@ -151,7 +151,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 60000, Gems = 60000},
                 ["Overclocked"] = {Coins = 60000, Gems = 60000},
                 ["FortuneBreaker"] = {Coins = 60000, Gems = 60000},
-                ["Assasin"] = {Coins = 60000, Gems = 60000},
+                ["Assassin"] = {Coins = 60000, Gems = 60000},
                 ["EthernalGlory"] = {Coins = 75000, Gems = 75000},
                 ["WarMachine"] = {Coins = 60000, Gems = 60000},
             }
@@ -181,7 +181,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 40000, Gems = 40000},
                 ["Overclocked"] = {Coins = 40000, Gems = 40000},
                 ["FortuneBreaker"] = {Coins = 40000, Gems = 40000},
-                ["Assasin"] = {Coins = 40000, Gems = 40000},
+                ["Assassin"] = {Coins = 40000, Gems = 40000},
                 ["EthernalGlory"] = {Coins = 40000, Gems = 40000},
                 ["WarMachine"] = {Coins = 40000, Gems = 40000},
             }
@@ -211,7 +211,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -241,7 +241,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -271,7 +271,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 10000, Gems = 10000},
                 ["Overclocked"] = {Coins = 10000, Gems = 10000},
                 ["FortuneBreaker"] = {Coins = 10000, Gems = 10000},
-                ["Assasin"] = {Coins = 10000, Gems = 10000},
+                ["Assassin"] = {Coins = 10000, Gems = 10000},
                 ["EthernalGlory"] = {Coins = 10000, Gems = 10000},
                 ["WarMachine"] = {Coins = 10000, Gems = 10000},
             }
@@ -301,7 +301,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 25000, Gems = 25000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -331,7 +331,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 25000, Gems = 25000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -361,7 +361,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -391,7 +391,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -421,7 +421,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -451,7 +451,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 12500, Gems = 12500},
                 ["Overclocked"] = {Coins = 12500, Gems = 12500},
                 ["FortuneBreaker"] = {Coins = 12500, Gems = 12500},
-                ["Assasin"] = {Coins = 12500, Gems = 12500},
+                ["Assassin"] = {Coins = 12500, Gems = 12500},
                 ["EthernalGlory"] = {Coins = 25000, Gems = 25000},
                 ["WarMachine"] = {Coins = 12500, Gems = 12500},
             }
@@ -481,7 +481,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 12500, Gems = 12500},
                 ["Overclocked"] = {Coins = 12500, Gems = 12500},
                 ["FortuneBreaker"] = {Coins = 12500, Gems = 12500},
-                ["Assasin"] = {Coins = 12500, Gems = 12500},
+                ["Assassin"] = {Coins = 12500, Gems = 12500},
                 ["EthernalGlory"] = {Coins = 17500, Gems = 17500},
                 ["WarMachine"] = {Coins = 12500, Gems = 12500},
             }
@@ -511,7 +511,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 12500, Gems = 12500},
                 ["Overclocked"] = {Coins = 12500, Gems = 12500},
                 ["FortuneBreaker"] = {Coins = 12500, Gems = 12500},
-                ["Assasin"] = {Coins = 12500, Gems = 12500},
+                ["Assassin"] = {Coins = 12500, Gems = 12500},
                 ["EthernalGlory"] = {Coins = 17500, Gems = 17500},
                 ["WarMachine"] = {Coins = 12500, Gems = 12500},
             }
@@ -541,7 +541,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 30000, Gems = 30000},
                 ["Overclocked"] = {Coins = 30000, Gems = 30000},
                 ["FortuneBreaker"] = {Coins = 30000, Gems = 30000},
-                ["Assasin"] = {Coins = 30000, Gems = 30000},
+                ["Assassin"] = {Coins = 30000, Gems = 30000},
                 ["EthernalGlory"] = {Coins = 45000, Gems = 45000},
                 ["WarMachine"] = {Coins = 30000, Gems = 30000},
             }
@@ -571,7 +571,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 50000, Gems = 50000},
                 ["Overclocked"] = {Coins = 50000, Gems = 50000},
                 ["FortuneBreaker"] = {Coins = 50000, Gems = 50000},
-                ["Assasin"] = {Coins = 50000, Gems = 50000},
+                ["Assassin"] = {Coins = 50000, Gems = 50000},
                 ["EthernalGlory"] = {Coins = 75000, Gems = 75000},
                 ["WarMachine"] = {Coins = 50000, Gems = 50000},
             }
@@ -601,7 +601,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -631,7 +631,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -661,7 +661,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -691,7 +691,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -721,7 +721,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -751,7 +751,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 15000, Gems = 15000},
                 ["Overclocked"] = {Coins = 15000, Gems = 15000},
                 ["FortuneBreaker"] = {Coins = 15000, Gems = 15000},
-                ["Assasin"] = {Coins = 15000, Gems = 15000},
+                ["Assassin"] = {Coins = 15000, Gems = 15000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 15000, Gems = 15000},
             }
@@ -781,7 +781,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 9000, Gems = 9000},
                 ["Overclocked"] = {Coins = 9000, Gems = 9000},
                 ["FortuneBreaker"] = {Coins = 9000, Gems = 9000},
-                ["Assasin"] = {Coins = 9000, Gems = 9000},
+                ["Assassin"] = {Coins = 9000, Gems = 9000},
                 ["EthernalGlory"] = {Coins = 9000, Gems = 9000},
                 ["WarMachine"] = {Coins = 9000, Gems = 9000},
             }
@@ -811,7 +811,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 6000, Gems = 6000},
                 ["Overclocked"] = {Coins = 6000, Gems = 6000},
                 ["FortuneBreaker"] = {Coins = 6000, Gems = 6000},
-                ["Assasin"] = {Coins = 6000, Gems = 6000},
+                ["Assassin"] = {Coins = 6000, Gems = 6000},
                 ["EthernalGlory"] = {Coins = 6000, Gems = 6000},
                 ["WarMachine"] = {Coins = 6000, Gems = 6000},
             }
@@ -841,39 +841,39 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 3000, Gems = 3000},
                 ["Overclocked"] = {Coins = 3000, Gems = 3000},
                 ["FortuneBreaker"] = {Coins = 3000, Gems = 3000},
-                ["Assasin"] = {Coins = 3000, Gems = 3000},
+                ["Assassin"] = {Coins = 3000, Gems = 3000},
                 ["EthernalGlory"] = {Coins = 3000, Gems = 3000},
                 ["WarMachine"] = {Coins = 3000, Gems = 3000},
             }
         },
     ["Trickster"] = {
-            basePrice = {Coins = 3000, Gems = 3000},
+            basePrice = {Coins = 1500, Gems = 1500},
             suffixes = {
-                ["BattleReady1"] = {Coins = 3000, Gems = 3000},
-                ["BattleReady2"] = {Coins = 3000, Gems = 3000},
-                ["BattleReady3"] = {Coins = 3000, Gems = 3000},
-                ["FarReach1"] = {Coins = 3000, Gems = 3000},
-                ["FarReach2"] = {Coins = 3000, Gems = 3000},
-                ["FarReach3"] = {Coins = 3000, Gems = 3000},
-                ["SwiftStrike1"] = {Coins = 3000, Gems = 3000},
-                ["SwiftStrike2"] = {Coins = 3000, Gems = 3000},
-                ["SwiftStrike3"] = {Coins = 3000, Gems = 3000},
-                ["EagleEye"] = {Coins = 3000, Gems = 3000},
-                ["LightningSpeed"] = {Coins = 3000, Gems = 3000},
-                ["FortuneFrenzy"] = {Coins = 3000, Gems = 3000},
-                ["Finisher"] = {Coins = 3000, Gems = 3000},
-                ["TurboTotem"] = {Coins = 3000, Gems = 3000},
-                ["Warlord"] = {Coins = 3000, Gems = 3000},
-                ["BattleMaster"] = {Coins = 3000, Gems = 3000},
-                ["ForceOfNature"] = {Coins = 3000, Gems = 3000},
-                ["BossHunter"] = {Coins = 3000, Gems = 3000},
-                ["GoldenMight"] = {Coins = 3000, Gems = 3000},
-                ["AlmightyEye"] = {Coins = 3000, Gems = 3000},
-                ["Overclocked"] = {Coins = 3000, Gems = 3000},
-                ["FortuneBreaker"] = {Coins = 3000, Gems = 3000},
-                ["Assasin"] = {Coins = 3000, Gems = 3000},
-                ["EthernalGlory"] = {Coins = 3000, Gems = 3000},
-                ["WarMachine"] = {Coins = 3000, Gems = 3000},
+                ["BattleReady1"] = {Coins = 1500, Gems = 1500},
+                ["BattleReady2"] = {Coins = 1500, Gems = 1500},
+                ["BattleReady3"] = {Coins = 1500, Gems = 1500},
+                ["FarReach1"] = {Coins = 1500, Gems = 1500},
+                ["FarReach2"] = {Coins = 1500, Gems = 1500},
+                ["FarReach3"] = {Coins = 1500, Gems = 1500},
+                ["SwiftStrike1"] = {Coins = 1500, Gems = 1500},
+                ["SwiftStrike2"] = {Coins = 1500, Gems = 1500},
+                ["SwiftStrike3"] = {Coins = 1500, Gems = 1500},
+                ["EagleEye"] = {Coins = 1500, Gems = 1500},
+                ["LightningSpeed"] = {Coins = 1500, Gems = 1500},
+                ["FortuneFrenzy"] = {Coins = 1500, Gems = 1500},
+                ["Finisher"] = {Coins = 1500, Gems = 1500},
+                ["TurboTotem"] = {Coins = 1500, Gems = 1500},
+                ["Warlord"] = {Coins = 1500, Gems = 1500},
+                ["BattleMaster"] = {Coins = 1500, Gems = 1500},
+                ["ForceOfNature"] = {Coins = 1500, Gems = 1500},
+                ["BossHunter"] = {Coins = 1500, Gems = 1500},
+                ["GoldenMight"] = {Coins = 1500, Gems = 1500},
+                ["AlmightyEye"] = {Coins = 1500, Gems = 1500},
+                ["Overclocked"] = {Coins = 1500, Gems = 1500},
+                ["FortuneBreaker"] = {Coins = 1500, Gems = 1500},
+                ["Assassin"] = {Coins = 1500, Gems = 1500},
+                ["EthernalGlory"] = {Coins = 1500, Gems = 1500},
+                ["WarMachine"] = {Coins = 1500, Gems = 1500},
             }
         },
     ["ParrotDragon"] = {
@@ -901,7 +901,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 6000, Gems = 6000},
                 ["Overclocked"] = {Coins = 6000, Gems = 6000},
                 ["FortuneBreaker"] = {Coins = 6000, Gems = 6000},
-                ["Assasin"] = {Coins = 6000, Gems = 6000},
+                ["Assassin"] = {Coins = 6000, Gems = 6000},
                 ["EthernalGlory"] = {Coins = 6000, Gems = 6000},
                 ["WarMachine"] = {Coins = 6000, Gems = 6000},
             }
@@ -931,7 +931,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 1000, Gems = 1000},
                 ["Overclocked"] = {Coins = 1000, Gems = 1000},
                 ["FortuneBreaker"] = {Coins = 1000, Gems = 1000},
-                ["Assasin"] = {Coins = 1000, Gems = 1000},
+                ["Assassin"] = {Coins = 1000, Gems = 1000},
                 ["EthernalGlory"] = {Coins = 5000, Gems = 5000},
                 ["WarMachine"] = {Coins = 1000, Gems = 1000},
             }
@@ -961,7 +961,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 5000, Gems = 5000},
                 ["Overclocked"] = {Coins = 5000, Gems = 5000},
                 ["FortuneBreaker"] = {Coins = 5000, Gems = 5000},
-                ["Assasin"] = {Coins = 5000, Gems = 5000},
+                ["Assassin"] = {Coins = 5000, Gems = 5000},
                 ["EthernalGlory"] = {Coins = 5000, Gems = 5000},
                 ["WarMachine"] = {Coins = 5000, Gems = 5000},
             }
@@ -991,7 +991,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 5000, Gems = 5000},
                 ["Overclocked"] = {Coins = 5000, Gems = 5000},
                 ["FortuneBreaker"] = {Coins = 5000, Gems = 5000},
-                ["Assasin"] = {Coins = 5000, Gems = 5000},
+                ["Assassin"] = {Coins = 5000, Gems = 5000},
                 ["EthernalGlory"] = {Coins = 5000, Gems = 5000},
                 ["WarMachine"] = {Coins = 5000, Gems = 5000},
             }
@@ -1021,7 +1021,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 5000, Gems = 5000},
                 ["Overclocked"] = {Coins = 5000, Gems = 5000},
                 ["FortuneBreaker"] = {Coins = 5000, Gems = 5000},
-                ["Assasin"] = {Coins = 5000, Gems = 5000},
+                ["Assassin"] = {Coins = 5000, Gems = 5000},
                 ["EthernalGlory"] = {Coins = 5000, Gems = 5000},
                 ["WarMachine"] = {Coins = 5000, Gems = 5000},
             }
@@ -1051,7 +1051,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 9000, Gems = 9000},
                 ["Overclocked"] = {Coins = 9000, Gems = 9000},
                 ["FortuneBreaker"] = {Coins = 9000, Gems = 9000},
-                ["Assasin"] = {Coins = 9000, Gems = 9000},
+                ["Assassin"] = {Coins = 9000, Gems = 9000},
                 ["EthernalGlory"] = {Coins = 15000, Gems = 15000},
                 ["WarMachine"] = {Coins = 9000, Gems = 9000},
             }
@@ -1081,7 +1081,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 9000, Gems = 9000},
                 ["Overclocked"] = {Coins = 9000, Gems = 9000},
                 ["FortuneBreaker"] = {Coins = 9000, Gems = 9000},
-                ["Assasin"] = {Coins = 9000, Gems = 9000},
+                ["Assassin"] = {Coins = 9000, Gems = 9000},
                 ["EthernalGlory"] = {Coins = 9000, Gems = 9000},
                 ["WarMachine"] = {Coins = 9000, Gems = 9000},
             }
@@ -1111,7 +1111,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 4000, Gems = 4000},
                 ["Overclocked"] = {Coins = 4000, Gems = 4000},
                 ["FortuneBreaker"] = {Coins = 4000, Gems = 4000},
-                ["Assasin"] = {Coins = 4000, Gems = 4000},
+                ["Assassin"] = {Coins = 4000, Gems = 4000},
                 ["EthernalGlory"] = {Coins = 4000, Gems = 4000},
                 ["WarMachine"] = {Coins = 4000, Gems = 4000},
             }
@@ -1141,7 +1141,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 1000, Gems = 1000},
                 ["Overclocked"] = {Coins = 1000, Gems = 1000},
                 ["FortuneBreaker"] = {Coins = 1000, Gems = 1000},
-                ["Assasin"] = {Coins = 1000, Gems = 1000},
+                ["Assassin"] = {Coins = 1000, Gems = 1000},
                 ["EthernalGlory"] = {Coins = 1000, Gems = 1000},
                 ["WarMachine"] = {Coins = 1000, Gems = 1000},
             }
@@ -1171,7 +1171,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 1000, Gems = 1000},
                 ["Overclocked"] = {Coins = 1000, Gems = 1000},
                 ["FortuneBreaker"] = {Coins = 1000, Gems = 1000},
-                ["Assasin"] = {Coins = 1000, Gems = 1000},
+                ["Assassin"] = {Coins = 1000, Gems = 1000},
                 ["EthernalGlory"] = {Coins = 1000, Gems = 1000},
                 ["WarMachine"] = {Coins = 1000, Gems = 1000},
             }
@@ -1201,7 +1201,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 1000, Gems = 1000},
                 ["Overclocked"] = {Coins = 1000, Gems = 1000},
                 ["FortuneBreaker"] = {Coins = 1000, Gems = 1000},
-                ["Assasin"] = {Coins = 1000, Gems = 1000},
+                ["Assassin"] = {Coins = 1000, Gems = 1000},
                 ["EthernalGlory"] = {Coins = 1000, Gems = 1000},
                 ["WarMachine"] = {Coins = 1000, Gems = 1000},
             }
@@ -1231,7 +1231,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1261,7 +1261,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1291,7 +1291,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1321,7 +1321,37 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 400, Gems = 400},
                 ["Overclocked"] = {Coins = 400, Gems = 400},
                 ["FortuneBreaker"] = {Coins = 400, Gems = 400},
-                ["Assasin"] = {Coins = 400, Gems = 400},
+                ["Assassin"] = {Coins = 400, Gems = 400},
+                ["EthernalGlory"] = {Coins = 400, Gems = 400},
+                ["WarMachine"] = {Coins = 400, Gems = 400},
+            }
+        },
+    ["EarthGoddess"] = {
+            basePrice = {Coins = 400, Gems = 400},
+            suffixes = {
+                ["BattleReady1"] = {Coins = 400, Gems = 400},
+                ["BattleReady2"] = {Coins = 400, Gems = 400},
+                ["BattleReady3"] = {Coins = 400, Gems = 400},
+                ["FarReach1"] = {Coins = 400, Gems = 400},
+                ["FarReach2"] = {Coins = 400, Gems = 400},
+                ["FarReach3"] = {Coins = 400, Gems = 400},
+                ["SwiftStrike1"] = {Coins = 400, Gems = 400},
+                ["SwiftStrike2"] = {Coins = 400, Gems = 400},
+                ["SwiftStrike3"] = {Coins = 400, Gems = 400},
+                ["EagleEye"] = {Coins = 400, Gems = 400},
+                ["LightningSpeed"] = {Coins = 400, Gems = 400},
+                ["FortuneFrenzy"] = {Coins = 400, Gems = 400},
+                ["Finisher"] = {Coins = 400, Gems = 400},
+                ["TurboTotem"] = {Coins = 400, Gems = 400},
+                ["Warlord"] = {Coins = 400, Gems = 400},
+                ["BattleMaster"] = {Coins = 400, Gems = 400},
+                ["ForceOfNature"] = {Coins = 400, Gems = 400},
+                ["BossHunter"] = {Coins = 400, Gems = 400},
+                ["GoldenMight"] = {Coins = 400, Gems = 400},
+                ["AlmightyEye"] = {Coins = 400, Gems = 400},
+                ["Overclocked"] = {Coins = 400, Gems = 400},
+                ["FortuneBreaker"] = {Coins = 400, Gems = 400},
+                ["Assassin"] = {Coins = 400, Gems = 400},
                 ["EthernalGlory"] = {Coins = 400, Gems = 400},
                 ["WarMachine"] = {Coins = 400, Gems = 400},
             }
@@ -1351,7 +1381,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 400, Gems = 400},
                 ["Overclocked"] = {Coins = 400, Gems = 400},
                 ["FortuneBreaker"] = {Coins = 400, Gems = 400},
-                ["Assasin"] = {Coins = 400, Gems = 400},
+                ["Assassin"] = {Coins = 400, Gems = 400},
                 ["EthernalGlory"] = {Coins = 400, Gems = 400},
                 ["WarMachine"] = {Coins = 400, Gems = 400},
             }
@@ -1381,7 +1411,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 400, Gems = 400},
                 ["Overclocked"] = {Coins = 400, Gems = 400},
                 ["FortuneBreaker"] = {Coins = 400, Gems = 400},
-                ["Assasin"] = {Coins = 400, Gems = 400},
+                ["Assassin"] = {Coins = 400, Gems = 400},
                 ["EthernalGlory"] = {Coins = 400, Gems = 400},
                 ["WarMachine"] = {Coins = 400, Gems = 400},
             }
@@ -1411,7 +1441,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 400, Gems = 400},
                 ["Overclocked"] = {Coins = 400, Gems = 400},
                 ["FortuneBreaker"] = {Coins = 400, Gems = 400},
-                ["Assasin"] = {Coins = 400, Gems = 400},
+                ["Assassin"] = {Coins = 400, Gems = 400},
                 ["EthernalGlory"] = {Coins = 400, Gems = 400},
                 ["WarMachine"] = {Coins = 400, Gems = 400},
             }
@@ -1441,7 +1471,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 400, Gems = 400},
                 ["Overclocked"] = {Coins = 400, Gems = 400},
                 ["FortuneBreaker"] = {Coins = 400, Gems = 400},
-                ["Assasin"] = {Coins = 400, Gems = 400},
+                ["Assassin"] = {Coins = 400, Gems = 400},
                 ["EthernalGlory"] = {Coins = 400, Gems = 400},
                 ["WarMachine"] = {Coins = 400, Gems = 400},
             }
@@ -1471,7 +1501,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1501,7 +1531,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1531,7 +1561,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1561,7 +1591,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1591,7 +1621,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1621,7 +1651,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1651,7 +1681,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1681,7 +1711,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1711,7 +1741,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1741,7 +1771,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1771,7 +1801,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1801,7 +1831,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1831,7 +1861,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1861,7 +1891,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1891,7 +1921,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1921,7 +1951,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 200, Gems = 200},
                 ["Overclocked"] = {Coins = 200, Gems = 200},
                 ["FortuneBreaker"] = {Coins = 200, Gems = 200},
-                ["Assasin"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
                 ["EthernalGlory"] = {Coins = 200, Gems = 200},
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
@@ -1951,7 +1981,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 1000, Gems = 1000},
                 ["Overclocked"] = {Coins = 1000, Gems = 1000},
                 ["FortuneBreaker"] = {Coins = 1000, Gems = 1000},
-                ["Assasin"] = {Coins = 1000, Gems = 1000},
+                ["Assassin"] = {Coins = 1000, Gems = 1000},
                 ["EthernalGlory"] = {Coins = 1000, Gems = 1000},
                 ["WarMachine"] = {Coins = 1000, Gems = 1000},
             }
@@ -1981,7 +2011,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 1000, Gems = 1000},
                 ["Overclocked"] = {Coins = 1000, Gems = 1000},
                 ["FortuneBreaker"] = {Coins = 1000, Gems = 1000},
-                ["Assasin"] = {Coins = 1000, Gems = 1000},
+                ["Assassin"] = {Coins = 1000, Gems = 1000},
                 ["EthernalGlory"] = {Coins = 5000, Gems = 5000},
                 ["WarMachine"] = {Coins = 1000, Gems = 1000},
             }
@@ -2011,7 +2041,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 65000, Gems = 65000},
                 ["Overclocked"] = {Coins = 50000, Gems = 50000},
                 ["FortuneBreaker"] = {Coins = 50000, Gems = 50000},
-                ["Assasin"] = {Coins = 50000, Gems = 50000},
+                ["Assassin"] = {Coins = 50000, Gems = 50000},
                 ["EthernalGlory"] = {Coins = 50000, Gems = 50000},
                 ["WarMachine"] = {Coins = 50000, Gems = 50000},
             }
@@ -2041,7 +2071,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 20000, Gems = 20000},
                 ["Overclocked"] = {Coins = 20000, Gems = 20000},
                 ["FortuneBreaker"] = {Coins = 20000, Gems = 20000},
-                ["Assasin"] = {Coins = 20000, Gems = 20000},
+                ["Assassin"] = {Coins = 20000, Gems = 20000},
                 ["EthernalGlory"] = {Coins = 30000, Gems = 30000},
                 ["WarMachine"] = {Coins = 20000, Gems = 20000},
             }
@@ -2071,7 +2101,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 20000, Gems = 20000},
                 ["Overclocked"] = {Coins = 20000, Gems = 20000},
                 ["FortuneBreaker"] = {Coins = 20000, Gems = 20000},
-                ["Assasin"] = {Coins = 20000, Gems = 20000},
+                ["Assassin"] = {Coins = 20000, Gems = 20000},
                 ["EthernalGlory"] = {Coins = 30000, Gems = 30000},
                 ["WarMachine"] = {Coins = 20000, Gems = 20000},
             }
@@ -2101,7 +2131,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 20000, Gems = 20000},
                 ["Overclocked"] = {Coins = 20000, Gems = 20000},
                 ["FortuneBreaker"] = {Coins = 20000, Gems = 20000},
-                ["Assasin"] = {Coins = 20000, Gems = 20000},
+                ["Assassin"] = {Coins = 20000, Gems = 20000},
                 ["EthernalGlory"] = {Coins = 30000, Gems = 30000},
                 ["WarMachine"] = {Coins = 20000, Gems = 20000},
             }
@@ -2131,7 +2161,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 20000, Gems = 20000},
                 ["Overclocked"] = {Coins = 20000, Gems = 20000},
                 ["FortuneBreaker"] = {Coins = 20000, Gems = 20000},
-                ["Assasin"] = {Coins = 20000, Gems = 20000},
+                ["Assassin"] = {Coins = 20000, Gems = 20000},
                 ["EthernalGlory"] = {Coins = 30000, Gems = 30000},
                 ["WarMachine"] = {Coins = 20000, Gems = 20000},
             }
@@ -2161,7 +2191,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 2000, Gems = 2000},
                 ["Overclocked"] = {Coins = 2000, Gems = 2000},
                 ["FortuneBreaker"] = {Coins = 2000, Gems = 2000},
-                ["Assasin"] = {Coins = 2000, Gems = 2000},
+                ["Assassin"] = {Coins = 2000, Gems = 2000},
                 ["EthernalGlory"] = {Coins = 2000, Gems = 2000},
                 ["WarMachine"] = {Coins = 2000, Gems = 2000},
             }
@@ -2191,7 +2221,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 50000, Gems = 50000},
                 ["Overclocked"] = {Coins = 50000, Gems = 50000},
                 ["FortuneBreaker"] = {Coins = 50000, Gems = 50000},
-                ["Assasin"] = {Coins = 50000, Gems = 50000},
+                ["Assassin"] = {Coins = 50000, Gems = 50000},
                 ["EthernalGlory"] = {Coins = 60000, Gems = 60000},
                 ["WarMachine"] = {Coins = 50000, Gems = 50000},
             }
@@ -2221,7 +2251,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 30000, Gems = 30000},
                 ["Overclocked"] = {Coins = 30000, Gems = 30000},
                 ["FortuneBreaker"] = {Coins = 30000, Gems = 30000},
-                ["Assasin"] = {Coins = 30000, Gems = 30000},
+                ["Assassin"] = {Coins = 30000, Gems = 30000},
                 ["EthernalGlory"] = {Coins = 40000, Gems = 40000},
                 ["WarMachine"] = {Coins = 30000, Gems = 30000},
             }
@@ -2251,7 +2281,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 30000, Gems = 30000},
                 ["Overclocked"] = {Coins = 30000, Gems = 30000},
                 ["FortuneBreaker"] = {Coins = 30000, Gems = 30000},
-                ["Assasin"] = {Coins = 30000, Gems = 30000},
+                ["Assassin"] = {Coins = 30000, Gems = 30000},
                 ["EthernalGlory"] = {Coins = 40000, Gems = 40000},
                 ["WarMachine"] = {Coins = 30000, Gems = 30000},
             }
@@ -2281,7 +2311,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 30000, Gems = 30000},
                 ["Overclocked"] = {Coins = 30000, Gems = 30000},
                 ["FortuneBreaker"] = {Coins = 30000, Gems = 30000},
-                ["Assasin"] = {Coins = 30000, Gems = 30000},
+                ["Assassin"] = {Coins = 30000, Gems = 30000},
                 ["EthernalGlory"] = {Coins = 45000, Gems = 45000},
                 ["WarMachine"] = {Coins = 30000, Gems = 30000},
             }
@@ -2311,7 +2341,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 30000, Gems = 30000},
                 ["Overclocked"] = {Coins = 30000, Gems = 30000},
                 ["FortuneBreaker"] = {Coins = 30000, Gems = 30000},
-                ["Assasin"] = {Coins = 30000, Gems = 30000},
+                ["Assassin"] = {Coins = 30000, Gems = 30000},
                 ["EthernalGlory"] = {Coins = 45000, Gems = 45000},
                 ["WarMachine"] = {Coins = 30000, Gems = 30000},
             }
@@ -2341,7 +2371,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 25000, Gems = 25000},
                 ["Overclocked"] = {Coins = 25000, Gems = 25000},
                 ["FortuneBreaker"] = {Coins = 25000, Gems = 25000},
-                ["Assasin"] = {Coins = 25000, Gems = 25000},
+                ["Assassin"] = {Coins = 25000, Gems = 25000},
                 ["EthernalGlory"] = {Coins = 40000, Gems = 40000},
                 ["WarMachine"] = {Coins = 25000, Gems = 25000},
             }
@@ -2371,7 +2401,7 @@ local towerConfigurations = {
                 ["AlmightyEye"] = {Coins = 25000, Gems = 25000},
                 ["Overclocked"] = {Coins = 25000, Gems = 25000},
                 ["FortuneBreaker"] = {Coins = 25000, Gems = 25000},
-                ["Assasin"] = {Coins = 25000, Gems = 25000},
+                ["Assassin"] = {Coins = 25000, Gems = 25000},
                 ["EthernalGlory"] = {Coins = 25000, Gems = 25000},
                 ["WarMachine"] = {Coins = 25000, Gems = 25000},
             }
