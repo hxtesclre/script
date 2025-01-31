@@ -2166,6 +2166,36 @@ local towerConfigurations = {
                 ["WarMachine"] = {Coins = 200, Gems = 200},
             }
         },
+    ["CyberPanther"] = {
+            basePrice = {Coins = 200, Gems = 200},
+            suffixes = {
+                ["BattleReady1"] = {Coins = 200, Gems = 200},
+                ["BattleReady2"] = {Coins = 200, Gems = 200},
+                ["BattleReady3"] = {Coins = 200, Gems = 200},
+                ["FarReach1"] = {Coins = 200, Gems = 200},
+                ["FarReach2"] = {Coins = 200, Gems = 200},
+                ["FarReach3"] = {Coins = 200, Gems = 200},
+                ["SwiftStrike1"] = {Coins = 200, Gems = 200},
+                ["SwiftStrike2"] = {Coins = 200, Gems = 200},
+                ["SwiftStrike3"] = {Coins = 200, Gems = 200},
+                ["EagleEye"] = {Coins = 200, Gems = 200},
+                ["LightningSpeed"] = {Coins = 200, Gems = 200},
+                ["FortuneFrenzy"] = {Coins = 200, Gems = 200},
+                ["Finisher"] = {Coins = 200, Gems = 200},
+                ["TurboTotem"] = {Coins = 200, Gems = 200},
+                ["Warlord"] = {Coins = 200, Gems = 200},
+                ["BattleMaster"] = {Coins = 200, Gems = 200},
+                ["ForceOfNature"] = {Coins = 200, Gems = 200},
+                ["BossHunter"] = {Coins = 200, Gems = 200},
+                ["GoldenMight"] = {Coins = 200, Gems = 200},
+                ["AlmightyEye"] = {Coins = 200, Gems = 200},
+                ["Overclocked"] = {Coins = 200, Gems = 200},
+                ["FortuneBreaker"] = {Coins = 200, Gems = 200},
+                ["Assassin"] = {Coins = 200, Gems = 200},
+                ["EternalGlory"] = {Coins = 200, Gems = 200},
+                ["WarMachine"] = {Coins = 200, Gems = 200},
+            }
+        },  
     ["SkeletalHydro"] = {
             basePrice = {Coins = 200, Gems = 200},
             suffixes = {
@@ -2587,6 +2617,36 @@ local towerConfigurations = {
             }
         },
     ["SkybornPiercer"] = {
+            basePrice = {Coins = 30000, Gems = 30000},
+            suffixes = {
+                ["BattleReady1"] = {Coins = 30000, Gems = 30000},
+                ["BattleReady2"] = {Coins = 30000, Gems = 30000},
+                ["BattleReady3"] = {Coins = 30000, Gems = 30000},
+                ["FarReach1"] = {Coins = 30000, Gems = 30000},
+                ["FarReach2"] = {Coins = 30000, Gems = 30000},
+                ["FarReach3"] = {Coins = 30000, Gems = 30000},
+                ["SwiftStrike1"] = {Coins = 30000, Gems = 30000},
+                ["SwiftStrike2"] = {Coins = 30000, Gems = 30000},
+                ["SwiftStrike3"] = {Coins = 30000, Gems = 30000},
+                ["EagleEye"] = {Coins = 30000, Gems = 30000},
+                ["LightningSpeed"] = {Coins = 30000, Gems = 30000},
+                ["FortuneFrenzy"] = {Coins = 30000, Gems = 30000},
+                ["Finisher"] = {Coins = 30000, Gems = 30000},
+                ["TurboTotem"] = {Coins = 30000, Gems = 30000},
+                ["Warlord"] = {Coins = 30000, Gems = 30000},
+                ["BattleMaster"] = {Coins = 30000, Gems = 30000},
+                ["ForceOfNature"] = {Coins = 30000, Gems = 30000},
+                ["BossHunter"] = {Coins = 30000, Gems = 30000},
+                ["GoldenMight"] = {Coins = 30000, Gems = 30000},
+                ["AlmightyEye"] = {Coins = 30000, Gems = 30000},
+                ["Overclocked"] = {Coins = 30000, Gems = 30000},
+                ["FortuneBreaker"] = {Coins = 30000, Gems = 30000},
+                ["Assassin"] = {Coins = 30000, Gems = 30000},
+                ["EternalGlory"] = {Coins = 45000, Gems = 45000},
+                ["WarMachine"] = {Coins = 30000, Gems = 30000},
+            }
+        },
+    ["SkybornPiercer1"] = {
             basePrice = {Coins = 30000, Gems = 30000},
             suffixes = {
                 ["BattleReady1"] = {Coins = 30000, Gems = 30000},
