@@ -2821,7 +2821,7 @@ local function attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, i
                 print("Покупка", itemName, "по цене", itemPrice, itemCurrency, "прошла успешно.", "MAX:", maxPrice)
                 wait(1)
                 if sendStatisticsFlag then
-                    sendStatistics("phxfing1", itemName, itemPrice, itemCurrency, maxPrice)
+                    sendStatistics(playerName, itemName, itemPrice, itemCurrency, maxPrice)
                 end
             else
                 print("Ошибка при покупке товара:", purchaseResult, itemName)
@@ -2837,7 +2837,7 @@ local function attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, i
                 print("Покупка", itemName, "по цене", itemPrice, itemCurrency, "прошла успешно.", "MAX:", maxPrice)
                 wait(1)
                 if sendStatisticsFlag then
-                    sendStatistics("phxfing1", itemName, itemPrice, itemCurrency, maxPrice)
+                    sendStatistics(playerName, itemName, itemPrice, itemCurrency, maxPrice)
                 end
             else
                 print("Ошибка при покупке товара:", purchaseResult, itemName)
