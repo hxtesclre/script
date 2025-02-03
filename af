@@ -2959,6 +2959,7 @@ end
 
 -- Основная функция проверки и покупки товаров
 local function checkAndPurchaseItems()
+    local maxPrice = 0
     -- Пример флагов (вы можете установить их динамически где-то еще)
     local buyForGems = true  -- Включить покупку за Gems
     local buyForCoins = true  -- Отключить покупку за Coins
