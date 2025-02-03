@@ -2998,7 +2998,7 @@ local function checkAndPurchaseItems()
                             attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, itemId, itemPrice, itemName, maxPrice, true)
                         else
                             if maxPrice then
-                              if itemPrice < maxPrice * 2 then
+                              if itemPrice > maxPrice then
                                   print("Киоск:", boothId, "Башня:", itemName, "Цена:", itemPrice, itemCurrency, "MAX:", maxPrice)
                                   wait()
                                   sendUnluckTryToPurchase(playerName, itemName, itemPrice, itemCurrency, maxPrice)
