@@ -6,6 +6,12 @@ local playerName = player.Name
 local playerGui = player:WaitForChild("PlayerGui")
 local Webhook_URL = "https://discord.com/api/webhooks/1325412724993298512/_b_Q7HeUHB4XEUgQtfaqppg_25c7Z0sTSaGC2S5GXVEvV1CxL6_sBqFY9Kk0FqLxPpR2"
 
+local bb=game:service'VirtualUser'
+game:service'Players'.LocalPlayer.Idled:connect(function()
+    bb:CaptureController()
+    bb:ClickButton2(Vector2.new())
+end)
+
 local towerConfigurations = {
     ["AirSerpent"] = {
             basePrice = {Coins = 50000, Gems = 50000},
@@ -3047,12 +3053,14 @@ local function startAutoPurchase()
         end
         checkAndPurchaseItems()
         counter = counter + 1
-        if counter == 3 then
+        if counter > 3 then
+            print("Смена сервера до repeat")
             repeat                     
             game:GetService("ReplicatedStorage"):WaitForChild("SharedModules"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ServerChangeService"):WaitForChild("RF"):WaitForChild("joinRandomServer"):InvokeServer()
-            wait(5)
-            print("Смена сервера")
-            until counter ~= 10
+            wait(3)
+            print("Смена сервера внутри repeat")
+            counter = counter + 1
+            until counter >= 10000000
         end
         wait(10)
     end
