@@ -2780,7 +2780,7 @@ local function sendStatistics(playerName, itemName, itemPrice, itemCurrency, max
 end
 
 local function sendStatus(playerName)
-    local currentTime = os.clock()
+    local currentTime = os.date("%H:%M:%S \n %m-%d")
     local data = {
         content = "", -- Основное сообщение (если нужно)
         embeds = {{
@@ -2790,7 +2790,7 @@ local function sendStatus(playerName)
             color = 0x008000, -- Цвет в десятичной системе (белый)
             fields = {
                 {
-                    name = "Работаем",
+                    name = "Время работы скрипта",
                     value = tostring(currentTime),
                     inline = true
                 },
