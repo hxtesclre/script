@@ -973,36 +973,6 @@ local towerConfigurations = {
                 ["WarMachine"] = {Coins = 6000, Gems = 4500},
             }
         },
-    ["Trickster"] = {
-            basePrice = {Coins = 1500, Gems = 1500},
-            suffixes = {
-                ["BattleReady1"] = {Coins = 1500, Gems = 1500},
-                ["BattleReady2"] = {Coins = 1500, Gems = 1500},
-                ["BattleReady3"] = {Coins = 1500, Gems = 1500},
-                ["FarReach1"] = {Coins = 1500, Gems = 1500},
-                ["FarReach2"] = {Coins = 1500, Gems = 1500},
-                ["FarReach3"] = {Coins = 1500, Gems = 1500},
-                ["SwiftStrike1"] = {Coins = 1500, Gems = 1500},
-                ["SwiftStrike2"] = {Coins = 1500, Gems = 1500},
-                ["SwiftStrike3"] = {Coins = 1500, Gems = 1500},
-                ["EagleEye"] = {Coins = 1500, Gems = 1500},
-                ["LightningSpeed"] = {Coins = 1500, Gems = 1500},
-                ["FortuneFrenzy"] = {Coins = 1500, Gems = 1500},
-                ["Finisher"] = {Coins = 1500, Gems = 1500},
-                ["TurboTotem"] = {Coins = 1500, Gems = 1500},
-                ["Warlord"] = {Coins = 1500, Gems = 1500},
-                ["BattleMaster"] = {Coins = 1500, Gems = 1500},
-                ["ForceOfNature"] = {Coins = 1500, Gems = 1500},
-                ["BossHunter"] = {Coins = 1500, Gems = 1500},
-                ["GoldenMight"] = {Coins = 1500, Gems = 1500},
-                ["AlmightyEye"] = {Coins = 1500, Gems = 1500},
-                ["Overclocked"] = {Coins = 1500, Gems = 1500},
-                ["FortuneBreaker"] = {Coins = 1500, Gems = 1500},
-                ["Assassin"] = {Coins = 1500, Gems = 1500},
-                ["EternalGlory"] = {Coins = 1500, Gems = 1500},
-                ["WarMachine"] = {Coins = 1500, Gems = 1500},
-            }
-        },
     ["ParrotDragon"] = {
             basePrice = {Coins = 6000, Gems = 6000},
             suffixes = {
@@ -2809,30 +2779,21 @@ local function sendStatistics(playerName, itemName, itemPrice, itemCurrency, max
     end
 end
 
-local function sendUnluckTryToPurchase(playerName, itemName, itemPrice, itemCurrency, maxPrice)
+local function sendStatus(playerName)
+    local currentTime = os.clock()
     local data = {
         content = "", -- Основное сообщение (если нужно)
         embeds = {{
             title = playerName,
             description = "",
             type = "rich",
-            color = 0xff0000, -- Цвет в десятичной системе (белый)
+            color = 0x008000, -- Цвет в десятичной системе (белый)
             fields = {
                 {
-                    name = "Башня",
-                    value = itemName,
+                    name = "Работаем",
+                    value = currentTime,
                     inline = true
                 },
-                {
-                    name = "Цена",
-                    value = itemPrice .. " " .. itemCurrency,
-                    inline = true
-                },
-                {
-                    name = "Максимальная цена",
-                    value = maxPrice .. " " .. itemCurrency,
-                    inline = true
-                }
             }
         }}
     }
@@ -3006,8 +2967,6 @@ local function checkAndPurchaseItems()
                             if maxPrice then
                                 if itemPrice and itemPrice < maxPrice * 2 then
                                     print("Киоск:", boothId, "Башня:", itemName, "Цена:", itemPrice, itemCurrency, "MAX:", maxPrice)
-                                    wait()
-                                    sendUnluckTryToPurchase(playerName, itemName, itemPrice, itemCurrency, maxPrice)
                                 elseif itemPrice and itemPrice > maxPrice then
                                     print("Киоск:", boothId, "Башня:", itemName, "Цена:", itemPrice, itemCurrency, "MAX:", maxPrice)
                                 else
@@ -3066,4 +3025,5 @@ local function startAutoPurchase()
     end
 end
 
+sendStatus(playerName)
 startAutoPurchase()
