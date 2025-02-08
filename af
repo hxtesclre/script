@@ -5,17 +5,6 @@ local player = game.Players.LocalPlayer
 local playerName = player.Name
 local playerGui = player:WaitForChild("PlayerGui")
 local Webhook_URL = "https://discord.com/api/webhooks/1325412724993298512/_b_Q7HeUHB4XEUgQtfaqppg_25c7Z0sTSaGC2S5GXVEvV1CxL6_sBqFY9Kk0FqLxPpR2"
-local ws = WebSocket.connect("ws://192.168.1.2:8080") -- Подключаемся к серверу
-
-print("WebSocket клиент запущен")
-
-ws.OnMessage:Connect(function(message)
-    print("Сообщение от сервера:", message)
-end)
-
-ws.OnClose:Connect(function()
-    print("WebSocket закрыт")
-end)
 
 local bb=game:service'VirtualUser'
     game:service'Players'.LocalPlayer.Idled:connect(function()
@@ -2994,7 +2983,6 @@ end
 
 -- Функция запуска автопокупки
 local function startAutoPurchase()
-    wait(20)
     local counter = 0
     if isAutoPurchaseRunning then
         print("Автопокупка уже запущена!")
@@ -3028,4 +3016,16 @@ local function startAutoPurchase()
 end
 
 sendStatus(playerName)
+wait(20)
+local ws = WebSocket.connect("ws://192.168.1.2:8080") -- Подключаемся к серверу
+
+print("WebSocket клиент запущен")
+
+ws.OnMessage:Connect(function(message)
+    print("Сообщение от сервера:", message)
+end)
+
+ws.OnClose:Connect(function()
+    print("WebSocket закрыт")
+end)
 startAutoPurchase()
