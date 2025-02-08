@@ -3017,7 +3017,7 @@ end
 
 sendStatus(playerName)
 wait(20)
-local ws = WebSocket.connect("ws://192.168.1.2:8080") -- Подключаемся к серверу
+local ws = WebSocket.connect("ws://192.168.0.137:8080") -- Подключаемся к серверу
 
 print("WebSocket клиент запущен")
 
