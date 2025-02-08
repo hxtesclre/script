@@ -5,6 +5,7 @@ local player = game.Players.LocalPlayer
 local playerName = player.Name
 local playerGui = player:WaitForChild("PlayerGui")
 local Webhook_URL = "https://discord.com/api/webhooks/1325412724993298512/_b_Q7HeUHB4XEUgQtfaqppg_25c7Z0sTSaGC2S5GXVEvV1CxL6_sBqFY9Kk0FqLxPpR2"
+local ws = WebSocket.connect("ws://192.168.1.2:8080") -- Подключаемся к серверу
 
 print("WebSocket клиент запущен")
 
@@ -2710,7 +2711,6 @@ local screenGui = Instance.new("ScreenGui")
     stopButton.Font = Enum.Font.SourceSansBold
     stopButton.TextScaled = true
     stopButton.Parent = screenGui -- Кнопка добавляется в ScreenGui
-end
 
 local function sendStatistics(playerName, itemName, itemPrice, itemCurrency, maxPrice)
     local data = {
