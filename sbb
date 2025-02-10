@@ -29,9 +29,10 @@ local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
         if item:IsA("GuiObject") then
             hasItems = true
             local absolutePosition = item.AbsolutePosition
-            print(item)
+            print("Checking item: " .. item.Name .. " | AbsolutePosition: " .. tostring(absolutePosition))
             -- Проверка позиции объекта в таблице соответствий
             for coord, value in pairs(coordinatesMapping) do
+                print("Comparing with coord: " .. tostring(coord) .. " | Value: " .. value)
                 if vectorsAreEqual(absolutePosition, coord) then
                     print("Match found for item: " .. item.Name .. " | Value: " .. value)
               
