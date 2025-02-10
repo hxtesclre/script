@@ -10,13 +10,13 @@ local coordinatesMapping = {
     -- добавьте сюда свои соответствия
 }
 
--- Функция для сравнения двух векторов с учетом допустимой погрешности
-local function vectorsAreEqual(vec1, vec2, tolerance)
-    return math.abs(vec1.X - vec2.X) <= tolerance and math.abs(vec1.Y - vec2.Y) <= tolerance
+local function roundToTenths(value)
+    return math.floor(value * 10 + 0.5) / 10
 end
 
--- Допустимая погрешность для сравнения координат
-local tolerance = 0.1
+local function vectorsAreEqual(vec1, vec2)
+    return roundToTenths(vec1.X) == roundToTenths(vec2.X) and roundToTenths(vec1.Y) == roundToTenths(vec2.Y)
+end
 
 -- Функция для проверки и сравнения координат
 local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
@@ -29,7 +29,7 @@ local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
             print(item)
             -- Проверка позиции объекта в таблице соответствий
             for coord, value in pairs(coordinatesMapping) do
-                if vectorsAreEqual(absolutePosition, coord, tolerance) then
+                if vectorsAreEqual(absolutePosition, coord) then
                     print("Match found for item: " .. item.Name .. " | Value: " .. value)
               
                     if value then
@@ -88,7 +88,6 @@ local roundedTargetX = roundToThousandths(targetX)
 local roundedTargetY = roundToThousandths(targetY)
 local roundedTargetZ = roundToThousandths(targetZ)
 
-
 while true do
   -- Проверка и перемещение игрока, если координаты не совпадают
   local currentCoordinates = getPlayerCoordinates()
@@ -99,9 +98,7 @@ while true do
 
       if roundedCurrentX ~= roundedTargetX or roundedCurrentY ~= roundedTargetY or roundedCurrentZ ~= roundedTargetZ then
           movePlayerToCoordinates(targetX, targetY, targetZ)
-      else
       end
-  else
   end
   wait(5)
   checkAndMapBinContent(bin, coordinatesMapping, tolerance)
