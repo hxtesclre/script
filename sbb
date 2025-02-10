@@ -53,5 +53,7 @@ local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
     end
 end
 
--- Вызов функции для проверки и сравнения
-checkAndMapBinContent(bin, coordinatesMapping, tolerance)
+while true do
+  checkAndMapBinContent(bin, coordinatesMapping, tolerance)
+  wait(10)
+end
