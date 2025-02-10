@@ -14,9 +14,12 @@ local function roundToTenths(value)
     return math.floor(value * 10 + 0.5) / 10
 end
 
+-- Функция для сравнения двух векторов с округлением
 local function vectorsAreEqual(vec1, vec2)
     return roundToTenths(vec1.X) == roundToTenths(vec2.X) and roundToTenths(vec1.Y) == roundToTenths(vec2.Y)
 end
+
+local tolerance = 0.2
 
 -- Функция для проверки и сравнения координат
 local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
