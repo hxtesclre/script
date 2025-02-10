@@ -1,0 +1,56 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local bin = LocalPlayer.PlayerGui.Merchant.Main.ShopWindow.Content.Bin
+
+-- Таблица соответствий координат и значений
+local coordinatesMapping = {
+    [Vector2.new(417.467896, 55.389389)] = 2,
+    [Vector2.new(226.067902, 230.289368)] = 3,
+    -- добавьте сюда свои соответствия
+}
+
+-- Функция для сравнения двух векторов с учетом допустимой погрешности
+local function vectorsAreEqual(vec1, vec2, tolerance)
+    return math.abs(vec1.X - vec2.X) <= tolerance and math.abs(vec1.Y - vec2.Y) <= tolerance
+end
+
+-- Допустимая погрешность для сравнения координат
+local tolerance = 0.1
+
+-- Функция для проверки и сравнения координат
+local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
+    local hasItems = false
+
+    for _, item in ipairs(bin:GetChildren()) do
+        if item:IsA("GuiObject") then
+            hasItems = true
+            local absolutePosition = item.AbsolutePosition
+
+            -- Проверка позиции объекта в таблице соответствий
+            for coord, value in pairs(coordinatesMapping) do
+                if vectorsAreEqual(absolutePosition, coord, tolerance) then
+                    print("Match found for item: " .. item.Name .. " | Value: " .. value)
+                    
+                    if value then
+                        if item.Name ~= "TraitRolls" and value == 2 then
+                            local args = { 2 }
+                            game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.7.0"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("MerchantService"):WaitForChild("RF"):WaitForChild("Purchase"):InvokeServer(unpack(args))
+                            print("buy 2 lot")
+                        end
+                        if item.Name ~= "TraitRolls" and value == 3 then
+                            local args = { 3 }
+                            game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.7.0"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("MerchantService"):WaitForChild("RF"):WaitForChild("Purchase"):InvokeServer(unpack(args))
+                            print("buy 3 lot")
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if not hasItems then
+        print("Bin is empty")
+    end
+end
+
+checkAndMapBinContent(bin, coordinatesMapping, tolerance)
