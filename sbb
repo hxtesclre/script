@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local bin = LocalPlayer.PlayerGui.Merchant.Main.ShopWindow.Content.Bin
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 -- Таблица соответствий координат и значений
 local coordinatesMapping = {
@@ -53,7 +54,75 @@ local function checkAndMapBinContent(bin, coordinatesMapping, tolerance)
     end
 end
 
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Функция для получения координат игрока
+local function getPlayerCoordinates()
+    local rootPart = Character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        return rootPart.Position
+    end
+    return nil
+end
+
+-- Функция для получения координат игрока
+local function getPlayerCoordinates()
+    local rootPart = Character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        return rootPart.Position
+    end
+    return nil
+end
+
+-- Функция для округления до тысячных
+local function roundToThousandths(value)
+    return math.floor(value * 100 + 0.5) / 100
+end
+
+-- Функция для перемещения игрока на заданные координаты
+local function movePlayerToCoordinates(x, y, z)
+    local rootPart = Character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        rootPart.CFrame = CFrame.new(x, y, z)
+        print("Player moved to: (" .. x .. ", " .. y .. ", " .. z .. ")")
+    else
+        print("Could not find HumanoidRootPart.")
+    end
+end
+
+-- Заданные координаты
+local targetX = 260.228
+local targetY = 9.722
+local targetZ = -456.180
+
+-- Округленные координаты
+local roundedTargetX = roundToThousandths(targetX)
+local roundedTargetY = roundToThousandths(targetY)
+local roundedTargetZ = roundToThousandths(targetZ)
+
+
 while true do
+  -- Проверка и перемещение игрока, если координаты не совпадают
+  local currentCoordinates = getPlayerCoordinates()
+  if currentCoordinates then
+      local roundedCurrentX = roundToThousandths(currentCoordinates.X)
+      local roundedCurrentY = roundToThousandths(currentCoordinates.Y)
+      local roundedCurrentZ = roundToThousandths(currentCoordinates.Z)
+
+      print("Current coordinates: X = " .. roundedCurrentX .. ", Y = " .. roundedCurrentY .. ", Z = " .. roundedCurrentZ)
+      print("Target coordinates: X = " .. roundedTargetX .. ", Y = " .. roundedTargetY .. ", Z = " .. roundedTargetZ)
+
+      if roundedCurrentX ~= roundedTargetX or roundedCurrentY ~= roundedTargetY or roundedCurrentZ ~= roundedTargetZ then
+          movePlayerToCoordinates(targetX, targetY, targetZ)
+      else
+          print("Player is already at the target coordinates.")
+      end
+  else
+      print("Could not retrieve player coordinates.")
+  end
+  wait(5)
   checkAndMapBinContent(bin, coordinatesMapping, tolerance)
-  wait(10)
+  wait(5)
 end
