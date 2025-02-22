@@ -108,5 +108,6 @@ end
 
 while true do
     repeating()
+	game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.7.0"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("StatsService"):WaitForChild("RF"):WaitForChild("Prestige"):InvokeServer()
     wait()
 end
