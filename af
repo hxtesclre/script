@@ -2758,6 +2758,10 @@ local function sendStatus(playerName)
     end
 end
 
+sendStatus(playerName)
+wait(20)
+local ws = WebSocket.connect("ws://192.168.0.137:8080") -- Подключаемся к серверу
+
 local function webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, sellerName)
     local currentTime = os.date("%H:%M:%S \n %m-%d") -- Форматируем время
     local data = {
@@ -2984,10 +2988,6 @@ local function startAutoPurchase()
         wait(10)
     end
 end
-
-sendStatus(playerName)
-wait(20)
-local ws = WebSocket.connect("ws://192.168.0.137:8080") -- Подключаемся к серверу
 
 print("WebSocket клиент запущен")
 
