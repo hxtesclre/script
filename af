@@ -2760,6 +2760,7 @@ end
 
 sendStatus(playerName)
 wait(20)
+--[[
 local ws = WebSocket.connect("ws://192.168.0.157:8080") -- Подключаемся к серверу
 
 local function webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, sellerName)
@@ -2780,7 +2781,7 @@ local function webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, 
     ws:Send(jsonData) -- Отправляем данные на WebSocket
     print("Отправлено сообщение:", jsonData) -- Лог в консоль
 end
-
+]]
 -- Флаги для управления автопокупкой
 local stopAutoPurchase = false
 local isAutoPurchaseRunning = false
@@ -2861,7 +2862,7 @@ local function attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, i
                 wait(1)
                 if sendStatisticsFlag then
                     sendStatistics(playerName, itemName, itemPrice, itemCurrency, maxPrice)
-                    webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, "JORJEOBUYER")
+                    -- webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, "JORJEOBUYER")
                 end
             else
                 print("Ошибка при покупке товара:", purchaseResult, itemName)
@@ -2878,7 +2879,7 @@ local function attemptPurchase(itemCurrency, buyForGems, buyForCoins, boothId, i
                 wait(1)
                 if sendStatisticsFlag then
                     sendStatistics(playerName, itemName, itemPrice, itemCurrency, maxPrice)
-                    webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, "JORJEOBUYER")
+                    -- webSend(playerName, itemName, itemPrice, itemCurrency, maxPrice, "JORJEOBUYER")
                 end
             else
                 print("Ошибка при покупке товара:", purchaseResult, itemName)
@@ -2991,6 +2992,7 @@ end
 
 print("WebSocket клиент запущен")
 
+--[[
 ws.OnMessage:Connect(function(message)
     print("Сообщение от сервера:", message)
 end)
@@ -2998,4 +3000,5 @@ end)
 ws.OnClose:Connect(function()
     print("WebSocket закрыт")
 end)
+]]
 startAutoPurchase()
